@@ -47,10 +47,10 @@ CHAT=Config.CHAT
 LOG_GROUP=Config.LOG_GROUP
 playlist=Config.playlist
 
-@Client.on_message(filters.command(["play", f"play@{U}"]) & (filters.chat(CHAT) | filters.private) | filters.audio & filters.private)
+@Client.on_message(filters.command(["play", f"play@{U}","y"]) & (filters.chat(CHAT) | filters.private) | filters.audio & filters.private)
 async def yplay(_, message: Message):
     if ADMIN_ONLY == "Y":
-        admins=[626664225]
+        admins=Config.ADMIN
         grpadmins=await _.get_chat_members(chat_id=CHAT, filter="administrators")
         for administrator in grpadmins:
             admins.append(administrator.user.id)
@@ -231,10 +231,10 @@ async def yplay(_, message: Message):
             
         
    
-@Client.on_message(filters.command(["dplay", f"dplay@{U}"]) & (filters.chat(CHAT) | filters.private))
+@Client.on_message(filters.command(["dplay", f"dplay@{U}", "d"]) & (filters.chat(CHAT) | filters.private))
 async def deezer(_, message):
     if ADMIN_ONLY == "Y":
-        admins=[626664225]
+        admins=Config.ADMIN
         grpadmins=await _.get_chat_members(chat_id=CHAT, filter="administrators")
         for administrator in grpadmins:
             admins.append(administrator.user.id)
