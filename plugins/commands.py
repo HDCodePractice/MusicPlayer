@@ -32,11 +32,7 @@ msg=Config.msg
 HOME_TEXT = "<b>Helo, [{}](tg://user?id={})\n\nIam MusicPlayer 2.0 which plays music in Channels and Groups 24*7.\n\nI can even Stream Youtube Live in Your Voicechat.\n\nDeploy Your Own bot from source code below.\n\nHit /help to know about available commands.</b>"
 HELP = """
 
-<b>Add the bot and User account in your Group with admin rights.
-
-Start a VoiceChat.
-
-Use /play <song name> or use /play as a reply to an audio file or youtube link.
+<b>Use /play <song name> or use /play as a reply to an audio file or youtube link.
 
 You can also use /dplay <song name> to play a song from Deezer.</b>
 
@@ -94,10 +90,6 @@ async def start(client, message):
 async def show_help(client, message):
     buttons = [
         [
-            InlineKeyboardButton('⚙️ Update Channel', url='https://t.me/subin_works'),
-            InlineKeyboardButton('🤖 Other Bots', url='https://t.me/subin_works/122'),
-        ],
-        [
             InlineKeyboardButton('👨🏼‍💻 Developer', url='https://t.me/chstockbot'),
             InlineKeyboardButton('🧩 Source', url='https://github.com/HDCodePractice/MusicPlayer'),
         ]
@@ -110,6 +102,7 @@ async def show_help(client, message):
         reply_markup=reply_markup
         )
     await message.delete()
+
 @Client.on_message(filters.command(["restart", f"restart@{U}"]) & filters.user(Config.ADMINS) & (filters.chat(CHAT) | filters.private))
 async def restart(client, message):
     await message.reply_text("🔄 Restarting...")

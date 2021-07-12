@@ -50,7 +50,7 @@ bot.send(
             ),
             types.BotCommand(
                 command="help",
-                description="Shows help message"
+                description="显示帮助信息"
             ),
             types.BotCommand(
                 command="play",
