@@ -28,11 +28,7 @@ playlist=Config.playlist
 
 HELP = """
 
-<b>Add the bot and User account in your Group with admin rights.
-
-Start a VoiceChat
-
-Use /play <song name> or use /play as a reply to an audio file or youtube link.
+<b>Use /play <song name> or use /play as a reply to an audio file or youtube link.
 
 You can also use /dplay <song name> to play a song from Deezer.</b>
 
