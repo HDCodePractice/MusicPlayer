@@ -6,7 +6,7 @@ Supports Live streaming from youtube
 ```
 Please fork this repository don't import code
 Made with Python3
-(C) @subinps
+(C) @subinps @老房东
 Copyright permission under MIT License
 License -> https://github.com/HDCodePractice/MusicPlayer/blob/master/LICENSE
 
