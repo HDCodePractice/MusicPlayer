@@ -75,8 +75,8 @@ async def start(client, message):
         InlineKeyboardButton('🤖 Other Bots', url='https://t.me/subin_works/122'),
     ],
     [
-        InlineKeyboardButton('👨🏼‍💻 Developer', url='https://t.me/subinps'),
-        InlineKeyboardButton('🧩 Source', url='https://github.com/subinps/MusicPlayer'),
+        InlineKeyboardButton('👨🏼‍💻 Developer', url='https://t.me/chstockbot'),
+        InlineKeyboardButton('🧩 Source', url='https://github.com/HDCodePractice/MusicPlayer'),
     ],
     [
         InlineKeyboardButton('👨🏼‍🦯 Help', callback_data='help'),
@@ -98,8 +98,8 @@ async def show_help(client, message):
             InlineKeyboardButton('🤖 Other Bots', url='https://t.me/subin_works/122'),
         ],
         [
-            InlineKeyboardButton('👨🏼‍💻 Developer', url='https://t.me/subinps'),
-            InlineKeyboardButton('🧩 Source', url='https://github.com/subinps/MusicPlayer'),
+            InlineKeyboardButton('👨🏼‍💻 Developer', url='https://t.me/chstockbot'),
+            InlineKeyboardButton('🧩 Source', url='https://github.com/HDCodePractice/MusicPlayer'),
         ]
     ]
     reply_markup = InlineKeyboardMarkup(buttons)
