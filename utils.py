@@ -176,14 +176,15 @@ class MusicPlayer(object):
             pass
         if os.path.exists(group_call.input_filename):
             os.remove(group_call.input_filename)
-        # credits: https://t.me/c/1480232458/6825
-        #os.mkfifo(group_call.input_filename)
+        # credits: 看起来fifo不起做用
+        # os.mkfifo(group_call.input_filename)
         process = ffmpeg.input(station_stream_url).output(
             group_call.input_filename,
             format='s16le',
             acodec='pcm_s16le',
             ac=2,
-            ar='48k'
+            ar='48k',
+            loglevel='error'
         ).overwrite_output().run_async()
         FFMPEG_PROCESSES[CHAT] = process
         while True:
@@ -202,7 +203,8 @@ class MusicPlayer(object):
                     format='s16le',
                     acodec='pcm_s16le',
                     ac=2,
-                    ar='48k'
+                    ar='48k',
+                    loglevel='error'
                     ).overwrite_output().run_async()
                 FFMPEG_PROCESSES[CHAT] = process
                 continue
