@@ -21,6 +21,11 @@
 #SOFTWARE.
 import os
 import re
+from dotenv import load_dotenv
+
+if os.path.exists("local.env"):
+    load_dotenv("local.env")
+
 from youtube_dl import YoutubeDL
 ydl_opts = {
     "geo-bypass": True,
@@ -29,7 +34,7 @@ ydl_opts = {
 ydl = YoutubeDL(ydl_opts)
 links=[]
 finalurl=""
-STREAM=os.environ.get("STREAM_URL", "https://eu10.fastcast4u.com/clubfmuae")
+STREAM=os.environ.get("STREAM_URL", "https://www.youtube.com/watch?v=rGPXugD0ekU")
 regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
 match = re.match(regex,STREAM)
 if match:
