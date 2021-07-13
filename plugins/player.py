@@ -563,6 +563,26 @@ async def clean_raw_pcm(client, m: Message):
     await mp.delete(k)
     await m.delete()
 
+@Client.on_message(filters.command(["vol", f"vol@{U}"]) & filters.user(ADMINS) & (filters.chat(CHAT) | filters.private))
+async def volume(_, m: Message):
+    usage = "**使用方法:**\n/vol [1-200]"
+    group_call = mp.group_call
+    if not group_call.is_connected:
+        k=await m.reply_text("没有任何播放可以设置音量。")
+        await mp.delete(k)
+        await m.delete()
+        return
+    volume = int(m.text.split(None, 1)[1])
+    if (volume < 1) or (volume > 200):
+        k=await m.reply_text(usage, quote=False)
+    else:
+        try:
+            await group_call.set_my_volume(volume=volume)
+            k=await m.reply_text(f"**音量已经设置为 {volume}**", quote=False)
+        except ValueError:
+            k=await m.reply_text(usage, quote=False)
+    await mp.delete(k)
+    await m.delete()
 
 @Client.on_message(filters.command(["mute", f"mute@{U}"]) & filters.user(ADMINS) & (filters.chat(CHAT) | filters.private))
 async def mute(_, m: Message):
@@ -610,11 +630,14 @@ async def show_playlist(_, m: Message):
         msg['playlist'] = await m.reply_text(pl)
     await m.delete()
 
-admincmds=["join", "unmute", "mute", "leave", "clean", "vc", "pause", "resume", "stop", "skip", "radio", "stopradio", "replay", "restart", f"join@{U}", f"unmute@{U}", f"mute@{U}", f"leave@{U}", f"clean@{U}", f"vc@{U}", f"pause@{U}", f"resume@{U}", f"stop@{U}", f"skip@{U}", f"radio@{U}", f"stopradio@{U}", f"replay@{U}", f"restart@{U}"]
+admincmds=[
+    "join", "unmute", "mute", "leave", "clean", "vc", "pause", "resume", "stop", "skip", "radio", "stopradio", "replay", "restart",  "vol"
+    f"join@{U}", f"unmute@{U}", f"mute@{U}", f"leave@{U}", f"clean@{U}", f"vc@{U}", f"pause@{U}", f"resume@{U}", f"stop@{U}", f"skip@{U}", 
+    f"radio@{U}", f"stopradio@{U}", f"replay@{U}", f"restart@{U}", f"vol@{U}"]
 
 @Client.on_message(filters.command(admincmds) & ~filters.user(ADMINS) & (filters.chat(CHAT) | filters.private))
 async def notforu(_, m: Message):
-    k=await m.reply("Who the hell you are?.")
+    k=await m.reply("你想干啥？介是管理员的事～")
     await mp.delete(k)
     await m.delete()
 

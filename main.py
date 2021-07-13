@@ -123,6 +123,10 @@ bot.send(
             types.BotCommand(
                 command="restart",
                 description="Restart the bot"
+            ),
+            types.BotCommand(
+                command="vol",
+                description="变更音量(管理员专用)"
             )
         ]
     )
