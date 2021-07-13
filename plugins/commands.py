@@ -19,7 +19,7 @@
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton,Message
 from pyrogram import Client, filters
 import signal
 from utils import USERNAME, FFMPEG_PROCESSES, mp
@@ -64,12 +64,8 @@ You can also use /dplay <song name> to play a song from Deezer.</b>
 
 
 @Client.on_message(filters.command(['start', f'start@{U}']))
-async def start(client, message):
+async def start(client, message:Message):
     buttons = [
-    [
-        InlineKeyboardButton('👨🏼‍💻 Developer', url='https://t.me/chstockbot'),
-        InlineKeyboardButton('🧩 Source', url='https://github.com/HDCodePractice/MusicPlayer'),
-    ],
     [
         InlineKeyboardButton('👨🏼‍🦯 Help', callback_data='help'),
         
@@ -83,7 +79,7 @@ async def start(client, message):
 
 
 @Client.on_message(filters.command(["help", f"help@{U}"]))
-async def show_help(client, message):
+async def show_help(client, message:Message):
     buttons = [
         [
             InlineKeyboardButton('👨🏼‍💻 Developer', url='https://t.me/chstockbot'),
@@ -94,13 +90,12 @@ async def show_help(client, message):
     if msg.get('help') is not None:
         await msg['help'].delete()
     msg['help'] = await message.reply_text(
-        HELP,
-        reply_markup=reply_markup
+        HELP
         )
     await message.delete()
 
 @Client.on_message(filters.command(["restart", f"restart@{U}"]) & filters.user(Config.ADMINS) & (filters.chat(CHAT) | filters.private))
-async def restart(client, message):
+async def restart(client, message:Message):
     await message.reply_text("🔄 Restarting...")
     await message.delete()
     process = FFMPEG_PROCESSES.get(CHAT)
