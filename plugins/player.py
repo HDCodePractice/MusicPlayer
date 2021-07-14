@@ -106,7 +106,8 @@ async def yplay(_, message: Message):
             await mp.delete(d)
             await message.delete()
             return
-        data={1:m_audio.audio.title, 2:m_audio.audio.file_id, 3:"telegram", 4:user}
+        # 加入fileid
+        data={1:m_audio.audio.title, 2:m_audio.audio.file_id, 3:"telegram", 4:user, 5:m_audio.audio.file_id, 6:None}
         playlist.append(data)
         if len(playlist) == 1:
             m_status = await message.reply_text(
@@ -180,8 +181,8 @@ async def yplay(_, message: Message):
             await mp.delete(k)
             await message.delete()
             return
-
-        data={1:title, 2:url, 3:"youtube", 4:user}
+        # data里加入5 文件id/6图片url
+        data={1:title, 2:url, 3:"youtube", 4:user,5:info['id'],6:info['thumbnails'][0]['url']}
         playlist.append(data)
         group_call = mp.group_call
         client = group_call.client
@@ -200,7 +201,7 @@ async def yplay(_, message: Message):
                     process.send_signal(signal.SIGTERM)
             if not group_call.is_connected:
                 await mp.start_call()
-            file=playlist[0][1]
+            file=playlist[0][5]
             group_call.input_filename = os.path.join(
                 client.workdir,
                 DEFAULT_DOWNLOAD_DIR,

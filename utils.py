@@ -101,7 +101,7 @@ class MusicPlayer(object):
         download_dir = os.path.join(client.workdir, DEFAULT_DOWNLOAD_DIR)
         group_call.input_filename = os.path.join(
             download_dir,
-            f"{playlist[1][1]}.raw"
+            f"{playlist[1][5]}.raw"
         )
         # remove old track from playlist
         old_track = playlist.pop(0)
@@ -110,7 +110,7 @@ class MusicPlayer(object):
             await self.send_playlist()
         os.remove(os.path.join(
             download_dir,
-            f"{old_track[1]}.raw")
+            f"{old_track[5]}.raw")
         )
         if len(playlist) == 1:
             return
@@ -132,7 +132,7 @@ class MusicPlayer(object):
         group_call = self.group_call
         client = group_call.client
         raw_file = os.path.join(client.workdir, DEFAULT_DOWNLOAD_DIR,
-                                f"{song[1]}.raw")
+                                f"{song[5]}.raw")
         #if os.path.exists(raw_file):
             #os.remove(raw_file)
         if not os.path.isfile(raw_file):
@@ -144,6 +144,7 @@ class MusicPlayer(object):
                 original_file = youtube(song[2])
             else:
                 original_file=wget.download(song[2])
+            print(original_file,raw_file)
             ffmpeg.input(original_file).output(
                 raw_file,
                 format='s16le',
