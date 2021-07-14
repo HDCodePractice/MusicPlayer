@@ -124,7 +124,7 @@ async def yplay(_, message: Message):
                     process.send_signal(signal.SIGTERM)
             if not group_call.is_connected:
                 await mp.start_call()
-            file=playlist[0][1]
+            file=playlist[0][5]
             group_call.input_filename = os.path.join(
                 _.workdir,
                 DEFAULT_DOWNLOAD_DIR,
@@ -133,6 +133,7 @@ async def yplay(_, message: Message):
 
             await m_status.delete()
             print(f"- START PLAYING: {playlist[0][1]}")
+            await mp.send_photo(playlist[0])
         if not playlist:
             pl = f"{emoji.NO_ENTRY} Empty playlist"
         else:   
@@ -210,6 +211,7 @@ async def yplay(_, message: Message):
 
             await m_status.delete()
             print(f"- START PLAYING: {playlist[0][1]}")
+            await mp.send_photo(playlist[0])
         else:
             await msg.delete()
         if not playlist:
@@ -298,6 +300,7 @@ async def deezer(_, message):
         )
         await m_status.delete()
         print(f"- START PLAYING: {playlist[0][1]}")
+        await mp.send_photo(playlist[0])
     else:
         await msg.delete()
     if not playlist:

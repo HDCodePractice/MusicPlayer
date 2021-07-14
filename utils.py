@@ -80,7 +80,7 @@ class MusicPlayer(object):
 
     async def send_playlist(self):
         if not playlist:
-            pl = f"{emoji.NO_ENTRY} Empty playlist"
+            pl = f"{emoji.NO_ENTRY} 播放列表里嘛都木有"
         else:       
             pl = f"{emoji.PLAY_BUTTON} **Playlist**:\n" + "\n".join([
                 f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}\n"
@@ -106,6 +106,7 @@ class MusicPlayer(object):
         # remove old track from playlist
         old_track = playlist.pop(0)
         print(f"- START PLAYING: {playlist[0][1]}")
+        await self.send_photo(playlist[0])
         if LOG_GROUP:
             await self.send_playlist()
         os.remove(os.path.join(
@@ -128,6 +129,17 @@ class MusicPlayer(object):
         )
         return message
 
+    async def send_photo(self,track):
+        chat_id = LOG_GROUP
+        url = track[6].split('?')[0]
+        message = await bot.send_photo(
+            chat_id,
+            photo=url,
+            caption=f"`{track[1]}`\n点播者: {track[4]} ",
+            disable_notification=True
+        )
+        return message
+
     async def download_audio(self, song):
         group_call = self.group_call
         client = group_call.client
@@ -144,7 +156,6 @@ class MusicPlayer(object):
                 original_file = youtube(song[2])
             else:
                 original_file=wget.download(song[2])
-            print(original_file,raw_file)
             ffmpeg.input(original_file).output(
                 raw_file,
                 format='s16le',
