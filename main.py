@@ -54,7 +54,7 @@ bot.send(
             ),
             types.BotCommand(
                 command="play",
-                description="Play song from youtube/audiofile"
+                description="请用/play 歌曲名 来点播歌曲"
             ),
             types.BotCommand(
                 command="dplay",

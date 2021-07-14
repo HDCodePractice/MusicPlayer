@@ -88,7 +88,7 @@ async def yplay(_, message: Message):
                 type="query"
                 ysearch=query
         else:
-            d=await message.reply_text("You Didn't gave me anything to play. Send me a audio file or reply /play to an audio file.")
+            d=await message.reply_text("请使用/play 歌曲名 来搜索播放，如果也可以使用 /y 歌曲名 来搜索播放，你更可以 @ 本机器人在youtube上进行搜索")
             await mp.delete(d)
             await message.delete()
             return
