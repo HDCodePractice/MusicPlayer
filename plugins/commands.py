@@ -28,6 +28,7 @@ import os
 import sys
 U=USERNAME
 CHAT=Config.CHAT
+LOG_GROUP=Config.LOG_GROUP
 msg=Config.msg
 HOME_TEXT = "<b>Helo, [{}](tg://user?id={})\n\nIam MusicPlayer 2.0 which plays music in Channels and Groups 24*7.\n\nI can even Stream Youtube Live in Your Voicechat.\n\nHit /help to know about available commands.</b>"
 HELP = """
@@ -94,7 +95,7 @@ async def show_help(client, message:Message):
         )
     await message.delete()
 
-@Client.on_message(filters.command(["restart", f"restart@{U}"]) & filters.user(Config.ADMINS) & (filters.chat(CHAT) | filters.private))
+@Client.on_message(filters.command(["restart", f"restart@{U}"]) & filters.user(Config.ADMINS) & (filters.chat([CHAT,LOG_GROUP]) | filters.private))
 async def restart(client, message:Message):
     await message.reply_text("🔄 Restarting...")
     await message.delete()

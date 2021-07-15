@@ -25,9 +25,10 @@ from utils import mp, RADIO, USERNAME
 from config import Config
 from config import STREAM
 CHAT=Config.CHAT
+LOG_GROUP=Config.LOG_GROUP
 ADMINS=Config.ADMINS
 
-@Client.on_message(filters.command(["radio", f"radio@{USERNAME}"]) & filters.user(ADMINS) & (filters.chat(CHAT) | filters.private))
+@Client.on_message(filters.command(["radio", f"radio@{USERNAME}"]) & filters.user(ADMINS) & (filters.chat([CHAT,LOG_GROUP]) | filters.private))
 async def radio(client, message: Message):
     if 1 in RADIO:
         k=await message.reply_text("Kindly stop existing Radio Stream /stopradio")
@@ -39,7 +40,7 @@ async def radio(client, message: Message):
     await mp.delete(k)
     await message.delete()
 
-@Client.on_message(filters.command(['stopradio', f"stopradio@{USERNAME}"]) & filters.user(ADMINS) & (filters.chat(CHAT) | filters.private))
+@Client.on_message(filters.command(['stopradio', f"stopradio@{USERNAME}"]) & filters.user(ADMINS) & (filters.chat([CHAT,LOG_GROUP]) | filters.private))
 async def stop(_, message: Message):
     if 0 in RADIO:
         k=await message.reply_text("Kindly start Radio First /radio")
