@@ -69,7 +69,6 @@ async def start(client, message:Message):
     buttons = [
     [
         InlineKeyboardButton('👨🏼‍🦯 Help', callback_data='help'),
-        
     ]
     ]
     reply_markup = InlineKeyboardMarkup(buttons)

@@ -20,6 +20,8 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 import os
+
+from pyrogram.types import InlineKeyboardButton,InlineKeyboardMarkup
 from config import Config
 import ffmpeg
 from pyrogram import emoji
@@ -132,11 +134,16 @@ class MusicPlayer(object):
     async def send_photo(self,track):
         if LOG_GROUP:
             chat_id = LOG_GROUP
+            buttons = [[
+                InlineKeyboardButton('来源',url=track[2])
+            ]]
+            reply_markup = InlineKeyboardMarkup(buttons)
             url = track[6].split('?')[0]
             message = await bot.send_photo(
                 chat_id,
                 photo=url,
                 caption=f"`{track[1]}`\n点播者: {track[4]} ",
+                reply_markup=reply_markup,
                 disable_notification=True
             )
             return message
