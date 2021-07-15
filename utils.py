@@ -130,15 +130,17 @@ class MusicPlayer(object):
         return message
 
     async def send_photo(self,track):
-        chat_id = LOG_GROUP
-        url = track[6].split('?')[0]
-        message = await bot.send_photo(
-            chat_id,
-            photo=url,
-            caption=f"`{track[1]}`\n点播者: {track[4]} ",
-            disable_notification=True
-        )
-        return message
+        if LOG_GROUP:
+            chat_id = LOG_GROUP
+            url = track[6].split('?')[0]
+            message = await bot.send_photo(
+                chat_id,
+                photo=url,
+                caption=f"`{track[1]}`\n点播者: {track[4]} ",
+                disable_notification=True
+            )
+            return message
+        return None
 
     async def download_audio(self, song):
         group_call = self.group_call
