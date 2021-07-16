@@ -135,13 +135,14 @@ class MusicPlayer(object):
         if LOG_GROUP:
             chat_id = LOG_GROUP
             buttons = [[
+                InlineKeyboardButton('再次点播', callback_data=f'research={track[2]}'),
                 InlineKeyboardButton('来源',url=track[2])
             ]]
             reply_markup = InlineKeyboardMarkup(buttons)
-            url = track[6].split('?')[0]
+            phtoturl = track[6].split('?')[0]
             message = await bot.send_photo(
                 chat_id,
-                photo=url,
+                photo=phtoturl,
                 caption=f"`{track[1]}`\n点播者: {track[4]} ",
                 reply_markup=reply_markup,
                 disable_notification=True
