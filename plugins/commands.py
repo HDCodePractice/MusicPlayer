@@ -30,7 +30,7 @@ U=USERNAME
 CHAT=Config.CHAT
 LOG_GROUP=Config.LOG_GROUP
 msg=Config.msg
-HOME_TEXT = "<b>Helo, [{}](tg://user?id={})\n\nIam MusicPlayer 2.0 which plays music in Channels and Groups 24*7.\n\nI can even Stream Youtube Live in Your Voicechat.\n\nHit /help to know about available commands.</b>"
+HOME_TEXT = "<b>Hello, [{}](tg://user?id={})\n\nI am HDMusicPlayer 1.0 which plays music in Channels and Groups 24/7.\n\nI can even Stream Youtube Live in Your Voicechat.\n\nHit /help to know about available commands.</b>\n==========================\n<b>你好，[{}](tg://user?id={})\n\n我是 HDMusicPlayer 1.0，它可以全天在频道和组中播放音乐。\n\n我甚至可以在你的语音聊天里放Youtube直播视频。\n\n点击 /help 了解可用命令。</b>"
 HELP = """
 
 <b>Use /play <song name> or use /play as a reply to an audio file or youtube link.
@@ -60,6 +60,34 @@ You can also use /dplay <song name> to play a song from Deezer.</b>
 **/mute**  Mute in VC.
 **/unmute**  Unmute in VC.
 **/restart** Restarts the Bot.
+==========================
+使用 /play <song name> 或使用 /play 作为对音频文件或 YouTube 链接的回复。
+
+您还可以使用 /dplay <song name> 播放 Deezer 中的歌曲。</b>
+
+**常用命令**：
+
+**/play** 回复音频文件或 YouTube 链接以播放它或使用 /play <歌曲名称>。
+**/dplay** 从 Deezer 播放音乐，使用 /dplay <歌曲名称>
+**/player** 显示当前播放的歌曲。
+**/help** 显示命令帮助
+**/playlist** 显示播放列表。
+
+**管理命令**：
+**/skip** [n] ... 跳过当前或 n，其中 n >= 2
+**/join** 加入语音聊天。
+**/leave** 离开当前语音聊天
+**/vc** 检查加入的VC。
+**/stop** 停止播放。
+**/radio** 开始广播。
+**/stopradio** 停止广播流。
+**/replay** 从头开始播放。
+**/clean** 删除未使用的 RAW PCM 文件。
+**/pause** 暂停播放。
+**/resume** 继续播放。
+**/mute** 在 VC 中静音。
+**/unmute** 在 VC 中取消静音。
+**/restart** 重新启动机器人。
 """
 
 
