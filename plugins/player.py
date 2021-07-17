@@ -87,7 +87,7 @@ async def yplay(_, message: Message):
                 type="query"
                 ysearch=query
         else:
-            d=await message.reply_text("请使用/play 歌曲名 来搜索播放，如果也可以使用 /y 歌曲名 来搜索播放，你更可以 @ 本机器人在youtube上进行搜索")
+            d=await message.reply_text("请使用/play 歌曲名 来搜索播放，如果也可以使用 /y 歌曲名 来搜索播放，你也可以 @ 本机器人在youtube上进行搜索")
             await mp.delete(d)
             await message.delete()
             return
@@ -95,13 +95,13 @@ async def yplay(_, message: Message):
     group_call = mp.group_call
     if type=="audio":
         if round(m_audio.audio.duration / 60) > DURATION_LIMIT:
-            d=await message.reply_text(f"❌ Audios longer than {DURATION_LIMIT} minute(s) aren't allowed, the provided audio is {round(m_audio.audio.duration/60)} minute(s)")
+            d=await message.reply_text(f"❌ Audios longer than {DURATION_LIMIT} minute(s) aren't allowed, the provided audio is {round(m_audio.audio.duration/60)} minute(s)\n❌ 此机器人放不了比{DURATION_LIMIT}分钟跟长的歌，此歌有{round(m_audio.audio.duration/60)}分钟长")
             await mp.delete(d)
             await message.delete()
             return
         if playlist and playlist[-1][2] \
                 == m_audio.audio.file_id:
-            d=await message.reply_text(f"{emoji.ROBOT} Already added in Playlist")
+            d=await message.reply_text(f"{emoji.ROBOT} Already added in playlist\nPlaylist里已经有了！")
             await mp.delete(d)
             await message.delete()
             return
@@ -110,7 +110,7 @@ async def yplay(_, message: Message):
         playlist.append(data)
         if len(playlist) == 1:
             m_status = await message.reply_text(
-                f"{emoji.INBOX_TRAY} Downloading and Processing..."
+                f"{emoji.INBOX_TRAY} Downloading and Processing...\n{emoji.INBOX_TRAY} 小水管在尽力下载..."
             )
             await mp.download_audio(playlist[0])
             if 1 in RADIO:
@@ -134,7 +134,7 @@ async def yplay(_, message: Message):
             print(f"- START PLAYING: {playlist[0][1]}")
             await mp.send_photo(playlist[0])
         if not playlist:
-            pl = f"{emoji.NO_ENTRY} Empty playlist"
+            pl = f"{emoji.NO_ENTRY} Empty playlist\nPlaylist是空的"
         else:   
             pl = f"{emoji.PLAY_BUTTON} **Playlist**:\n" + "\n".join([
                 f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}"
@@ -151,18 +151,18 @@ async def yplay(_, message: Message):
             await mp.delete(k)
     if type=="youtube" or type=="query":
         if type=="youtube":
-            msg = await message.reply_text("⚡️ **Fetching Song From YouTube...**")
+            msg = await message.reply_text("⚡️ **Fetching Song From YouTube...**\n⚡️ **正在从YouTube加载歌曲...**")
             url=yturl
         elif type=="query":
             try:
-                msg = await message.reply_text("⚡️ **Fetching Song From YouTube...**")
+                msg = await message.reply_text("⚡️ **Fetching Song From YouTube...**\n⚡️ **正在从YouTube加载歌曲...**")
                 ytquery=ysearch
                 results = YoutubeSearch(ytquery, max_results=1).to_dict()
                 url = f"https://youtube.com{results[0]['url_suffix']}"
                 title = results[0]["title"][:40]
             except Exception as e:
                 await msg.edit(
-                    "Song not found.\nTry inline mode.."
+                    "Song not found.\nTry inline mode...\n==================\n啥么都没找到"
                 )
                 print(str(e))
                 return
@@ -177,7 +177,7 @@ async def yplay(_, message: Message):
         duration = round(info["duration"] / 60)
         title= info["title"]
         if int(duration) > DURATION_LIMIT:
-            k=await message.reply_text(f"❌ Videos longer than {DURATION_LIMIT} minute(s) aren't allowed, the provided video is {duration} minute(s)")
+            k=await message.reply_text(f"❌ Videos longer than {DURATION_LIMIT} minute(s) aren't allowed, the provided video is {duration} minute(s)\n此机器人放不了比{DURATION_LIMIT}分钟跟长的歌，此歌有{duration}分钟长")
             await mp.delete(k)
             await message.delete()
             return
@@ -188,7 +188,7 @@ async def yplay(_, message: Message):
         client = group_call.client
         if len(playlist) == 1:
             m_status = await msg.edit(
-                f"{emoji.INBOX_TRAY} Downloading and Processing..."
+                f"{emoji.INBOX_TRAY} Downloading and Processing...{emoji.INBOX_TRAY} 小水管在尽力下载..."
             )
             await mp.download_audio(playlist[0])
             if 1 in RADIO:
@@ -214,7 +214,7 @@ async def yplay(_, message: Message):
         else:
             await msg.delete()
         if not playlist:
-            pl = f"{emoji.NO_ENTRY} Empty playlist"
+            pl = f"{emoji.NO_ENTRY} Empty playlist\nPlaylist是空的"
         else:
             pl = f"{emoji.PLAY_BUTTON} **Playlist**:\n" + "\n".join([
                 f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}"
@@ -250,13 +250,13 @@ async def deezer(_, message):
         text = message.text.split(" ", 1)
         query = text[1]
     else:
-        k=await message.reply_text("You Didn't gave me anything to play use /dplay <song name>")
+        k=await message.reply_text("You didn't give me anything to play, please use /dplay <song name>\n你没有给我任何东西来播放，请使用 /dplay <song name>")
         await mp.delete(k)
         await message.delete()
         return
     user=f"[{message.from_user.first_name}](tg://user?id={message.from_user.id})"
     group_call = mp.group_call
-    msg = await message.reply("⚡️ **Fetching Song From Deezer...**")
+    msg = await message.reply("⚡️ **Fetching Song From Deezer...**\n⚡️ **从 Deezer 获取歌曲...**")
     try:
         songs = await arq.deezer(query,1)
         if not songs.ok:
@@ -268,7 +268,7 @@ async def deezer(_, message):
         title = songs.result[0].title
 
     except:
-        k=await msg.edit("No results found")
+        k=await msg.edit("No results found\n啥么都没找到")
         await mp.delete(k)
         await message.delete()
         return
@@ -278,7 +278,7 @@ async def deezer(_, message):
     client = group_call.client
     if len(playlist) == 1:
         m_status = await msg.edit(
-            f"{emoji.INBOX_TRAY} Downloading and Processing..."
+            f"{emoji.INBOX_TRAY} Downloading and Processing...\n{emoji.INBOX_TRAY} 小水管在尽力下载..."
         )
         await mp.download_audio(playlist[0])
         if 1 in RADIO:
@@ -303,7 +303,7 @@ async def deezer(_, message):
     else:
         await msg.delete()
     if not playlist:
-        pl = f"{emoji.NO_ENTRY} Empty playlist"
+        pl = f"{emoji.NO_ENTRY} Empty playlist\nPlaylist是空的"
     else:
         pl = f"{emoji.PLAY_BUTTON} **Playlist**:\n" + "\n".join([
             f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}"
@@ -325,7 +325,7 @@ async def deezer(_, message):
 @Client.on_message(filters.command(["player", f"player@{U}"]) & (filters.chat([CHAT,LOG_GROUP]) | filters.private))
 async def player(_, m: Message):
     if not playlist:
-        k=await m.reply_text(f"{emoji.NO_ENTRY} No songs are playing")
+        k=await m.reply_text(f"{emoji.NO_ENTRY} No songs are playing\n{emoji.NO_ENTRY} 现在不在播放音乐")
         await mp.delete(k)
         await m.delete()
         return
@@ -374,14 +374,14 @@ async def player(_, m: Message):
 async def skip_track(_, m: Message):
     group_call = mp.group_call
     if not group_call.is_connected:
-        k=await m.reply("Nothing Playing")
+        k=await m.reply("Nothing Playing\n现在不在播放音乐")
         await mp.delete(k)
         await m.delete()
         return
     if len(m.command) == 1:
         await mp.skip_current_playing()
         if not playlist:
-            pl = f"{emoji.NO_ENTRY} Empty playlist"
+            pl = f"{emoji.NO_ENTRY} Empty playlist\nPlaylist是空的"
         else:
             pl = f"{emoji.PLAY_BUTTON} **Playlist**:\n" + "\n".join([
             f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}"
@@ -410,7 +410,7 @@ async def skip_track(_, m: Message):
             k=await m.reply_text("\n".join(text))
             await mp.delete(k)
             if not playlist:
-                pl = f"{emoji.NO_ENTRY} Empty Playlist"
+                pl = f"{emoji.NO_ENTRY} Empty Playlist\nPlaylist是空的"
             else:
                 pl = f"{emoji.PLAY_BUTTON} **Playlist**:\n" + "\n".join([
                     f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}"
@@ -434,13 +434,13 @@ async def skip_track(_, m: Message):
 async def join_group_call(client, m: Message):
     group_call = mp.group_call
     if group_call.is_connected:
-        k=await m.reply_text(f"{emoji.ROBOT} Already joined voice chat")
+        k=await m.reply_text(f"{emoji.ROBOT} Already joined voice chat\n已经在voice chat里头了！")
         await mp.delete(k)
         await m.delete()
         return
     await mp.start_call()
     chat = await client.get_chat(CHAT)
-    k=await m.reply_text(f"Succesfully Joined Voice Chat in {chat.title}")
+    k=await m.reply_text(f"Succesfully Joined voice chat in {chat.title}\n成功的加入了{chat.title}的voice chat")
     await mp.delete(k)
     await m.delete()
 
@@ -449,7 +449,7 @@ async def join_group_call(client, m: Message):
 async def leave_voice_chat(_, m: Message):
     group_call = mp.group_call
     if not group_call.is_connected:
-        k=await m.reply_text("Not joined any Voicechat yet.")
+        k=await m.reply_text("Not joined any voice chat yet.\n我都没有加入voice chat，我还咋么离开呀？")
         await mp.delete(k)
         await m.delete()
         return
@@ -458,7 +458,7 @@ async def leave_voice_chat(_, m: Message):
         await mp.stop_radio()
     group_call.input_filename = ''
     await group_call.stop()
-    k=await m.reply_text("Left the VoiceChat")
+    k=await m.reply_text("Left the voice chat\n已退出voice chat")
     await mp.delete(k)
     await m.delete()
 
@@ -475,7 +475,7 @@ async def list_voice_chat(client, m: Message):
         )
     else:
         k=await m.reply_text(emoji.NO_ENTRY
-                                   + "Didn't join any voice chat yet")
+                                   + "Didn't join any voice chat yet\n暂时没加入voice chat")
     await mp.delete(k)
     await m.delete()
 
@@ -484,14 +484,14 @@ async def list_voice_chat(client, m: Message):
 async def stop_playing(_, m: Message):
     group_call = mp.group_call
     if not group_call.is_connected:
-        k=await m.reply_text("Nothing playing to stop.")
+        k=await m.reply_text("Nothing playing to stop.\n啥么都不在播放！")
         await mp.delete(k)
         await m.delete()
         return
     if 1 in RADIO:
         await mp.stop_radio()
     group_call.stop_playout()
-    k=await m.reply_text(f"{emoji.STOP_BUTTON} Stopped playing")
+    k=await m.reply_text(f"{emoji.STOP_BUTTON} Stopped playing.\n以停止播放。")
     playlist.clear()
     await mp.delete(k)
     await m.delete()
@@ -501,19 +501,19 @@ async def stop_playing(_, m: Message):
 async def restart_playing(_, m: Message):
     group_call = mp.group_call
     if not group_call.is_connected:
-        k=await m.reply_text("Nothing playing to replay.")
+        k=await m.reply_text("Nothing playing to replay.\n啥么都不在播放！")
         await mp.delete(k)
         await m.delete()
         return
     if not playlist:
-        k=await m.reply_text("Empty Playlist.")
+        k=await m.reply_text("Empty Playlist.\nPlaylist是空的")
         await mp.delete(k)
         await m.delete()
         return
     group_call.restart_playout()
     k=await m.reply_text(
         f"{emoji.COUNTERCLOCKWISE_ARROWS_BUTTON}  "
-        "Playing from the beginning..."
+        "Playing from the beginning...\n从新开始播放playlist..."
     )
     await mp.delete(k)
     await m.delete()
@@ -523,12 +523,12 @@ async def restart_playing(_, m: Message):
 async def pause_playing(_, m: Message):
     group_call = mp.group_call
     if not group_call.is_connected:
-        k=await m.reply_text("Nothing playing to pause.")
+        k=await m.reply_text("Nothing playing to pause.\n啥么都不在播放！")
         await mp.delete(k)
         await m.delete()
         return
     mp.group_call.pause_playout()
-    k=await m.reply_text(f"{emoji.PLAY_OR_PAUSE_BUTTON} Paused",
+    k=await m.reply_text(f"{emoji.PLAY_OR_PAUSE_BUTTON} Paused.\n已暂停。",
                                quote=False)
     await mp.delete(k)
     await m.delete()
@@ -538,12 +538,12 @@ async def pause_playing(_, m: Message):
 @Client.on_message(filters.command(["resume", f"resume@{U}"]) & filters.user(ADMINS) & (filters.chat([CHAT,LOG_GROUP]) | filters.private))
 async def resume_playing(_, m: Message):
     if not mp.group_call.is_connected:
-        k=await m.reply_text("Nothing paused to resume.")
+        k=await m.reply_text("Nothing paused to resume.啥么都没暂停！")
         await mp.delete(k)
         await m.delete()
         return
     mp.group_call.resume_playout()
-    k=await m.reply_text(f"{emoji.PLAY_OR_PAUSE_BUTTON} Resumed",
+    k=await m.reply_text(f"{emoji.PLAY_OR_PAUSE_BUTTON} Resumed.\n已从新开始播放。",
                                quote=False)
     await mp.delete(k)
     await m.delete()
@@ -591,12 +591,12 @@ async def volume(_, m: Message):
 async def mute(_, m: Message):
     group_call = mp.group_call
     if not group_call.is_connected:
-        k=await m.reply_text("Nothing playing to mute.")
+        k=await m.reply_text("Nothing playing to mute.\n啥么都不在播放！")
         await mp.delete(k)
         await m.delete()
         return
     group_call.set_is_mute(True)
-    k=await m.reply_text(f"{emoji.MUTED_SPEAKER} Muted")
+    k=await m.reply_text(f"{emoji.MUTED_SPEAKER} Muted\n已静音")
     await mp.delete(k)
     await m.delete()
 
@@ -604,19 +604,19 @@ async def mute(_, m: Message):
 async def unmute(_, m: Message):
     group_call = mp.group_call
     if not group_call.is_connected:
-        k=await m.reply_text("Nothing playing to mute.")
+        k=await m.reply_text("Nothing playing to mute.\n啥么都不在播放！")
         await mp.delete(k)
         await m.delete()
         return
     group_call.set_is_mute(False)
-    k=await m.reply_text(f"{emoji.SPEAKER_MEDIUM_VOLUME} Unmuted")
+    k=await m.reply_text(f"{emoji.SPEAKER_MEDIUM_VOLUME} Unmuted\n已取消静音")
     await mp.delete(k)
     await m.delete()
 
 @Client.on_message(filters.command(["playlist", f"playlist@{U}"]) & (filters.chat([CHAT,LOG_GROUP]) | filters.private))
 async def show_playlist(_, m: Message):
     if not playlist:
-        k=await m.reply_text(f"{emoji.NO_ENTRY} No songs are playing")
+        k=await m.reply_text(f"{emoji.NO_ENTRY} No songs are playing\n啥么都不在播放！")
         await mp.delete(k)
         await m.delete()
         return

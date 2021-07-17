@@ -85,7 +85,7 @@ async def search(client, query):
             await query.answer(
                 results=answers,
                 cache_time=0,
-                switch_pm_text=("Nothing found"),
+                switch_pm_text=("Nothing found\n啥么都没找到"),
                 switch_pm_parameter="",
             )
 
