@@ -83,9 +83,9 @@ class MusicPlayer(object):
     async def send_playlist(self):
         if not playlist:
             pl = f"{emoji.NO_ENTRY} 播放列表里嘛都木有"
-        else:       
+        else:
             pl = f"{emoji.PLAY_BUTTON} **Playlist**:\n" + "\n".join([
-                f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}\n"
+                f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4].split('(tg://user?id=')[0]}\n"
                 for i, x in enumerate(playlist)
             ])
         if msg.get('playlist') is not None:
