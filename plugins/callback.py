@@ -72,7 +72,7 @@ You can also use /dplay <song name> to play a song from Deezer.</b>
 async def cb_handler(client: Client, query: CallbackQuery):
     if query.data.startswith("research"):
         url = query.data.split("research=")[1]
-        user=f"[{query.message.from_user.first_name}](tg://user?id={query.message.from_user.id})"
+        user=f"[{query.from_user.first_name}](tg://user?id={query.from_user.id})"
         try:
             msg = await client.send_message(query.message.chat.id, f"在YouTube里查询...")
             ytquery = url
@@ -138,7 +138,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             await mp.download_audio(track)
         if LOG_GROUP:
             await mp.send_playlist()
-            
+
     # 必须管理员才可以使用的CallbackQuery
     if query.from_user.id not in Config.ADMINS and query.data != "help":
         await query.answer(
