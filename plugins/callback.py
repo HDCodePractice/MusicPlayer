@@ -70,6 +70,76 @@ You can also use /dplay <song name> to play a song from Deezer.</b>
 
 @Client.on_callback_query()
 async def cb_handler(client: Client, query: CallbackQuery):
+    if query.data.startswith("research"):
+        url = query.data.split("research=")[1]
+        user=f"[{query.message.from_user.first_name}](tg://user?id={query.message.from_user.id})"
+        try:
+            msg = await client.send_message(query.message.chat.id, f"在YouTube里查询...")
+            ytquery = url
+            results = YoutubeSearch(ytquery, max_results=1).to_dict()
+            url = f"https://youtube.com{results[0]['url_suffix']}"
+        except Exception as e:
+            await msg.edit("YouTube里已经找不到这个歌曲了...")
+            await mp.delete(msg)
+            return
+        ydl_opts = {
+            "geo-bypass": True,
+            "nocheckcertificate": True
+        }
+        print(f"下载url{url}")
+        ydl = YoutubeDL(ydl_opts)
+        info = ydl.extract_info(url, False)
+        duration = round(info["duration"] / 60)
+        title= info["title"]
+        if int(duration) > DURATION_LIMIT:
+            await msg.edit(f"❌ Videos longer than {DURATION_LIMIT} minute(s) aren't allowed, the provided video is {duration} minute(s)")
+            await mp.delete(msg)
+            return
+        # data里加入5 文件id/6图片url
+        data={1:title, 2:url, 3:"youtube", 4:user,5:info['id'],6:info['thumbnails'][0]['url']}
+        playlist.append(data)
+        group_call = mp.group_call
+        client = group_call.client
+        if len(playlist) == 1:
+            m_status = await msg.edit(
+                f"{emoji.INBOX_TRAY} Downloading and Processing..."
+            )
+            await mp.download_audio(playlist[0])
+            if 1 in RADIO:
+                if group_call:
+                    group_call.input_filename = ''
+                    RADIO.remove(1)
+                    RADIO.add(0)
+                process = FFMPEG_PROCESSES.get(CHAT)
+                if process:
+                    process.send_signal(signal.SIGTERM)
+            if not group_call.is_connected:
+                await mp.start_call()
+            file=playlist[0][5]
+            group_call.input_filename = os.path.join(
+                client.workdir,
+                DEFAULT_DOWNLOAD_DIR,
+                f"{file}.raw"
+            )
+
+            await m_status.delete()
+            print(f"- START PLAYING: {playlist[0][1]}")
+            await mp.send_photo(playlist[0])
+        else:
+            await msg.delete()
+        if not playlist:
+            pl = f"{emoji.NO_ENTRY} Empty playlist"
+        else:
+            pl = f"{emoji.PLAY_BUTTON} **Playlist**:\n" + "\n".join([
+                f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}"
+                for i, x in enumerate(playlist)
+                ])
+        for track in playlist[:2]:
+            await mp.download_audio(track)
+        if LOG_GROUP:
+            await mp.send_playlist()
+            
+    # 必须管理员才可以使用的CallbackQuery
     if query.from_user.id not in Config.ADMINS and query.data != "help":
         await query.answer(
             "Who the hell you are",
@@ -191,71 +261,3 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=reply_markup
 
         )
-    elif query.data.startswith("research"):
-        url = query.data.split("research=")[1]
-        user=f"[{query.message.from_user.first_name}](tg://user?id={query.message.from_user.id})"
-        try:
-            msg = await client.send_message(query.message.chat.id, f"在YouTube里查询...")
-            ytquery = url
-            results = YoutubeSearch(ytquery, max_results=1).to_dict()
-            url = f"https://youtube.com{results[0]['url_suffix']}"
-        except Exception as e:
-            await msg.edit("YouTube里已经找不到这个歌曲了...")
-            await mp.delete(msg)
-            return
-        ydl_opts = {
-            "geo-bypass": True,
-            "nocheckcertificate": True
-        }
-        print(f"下载url{url}")
-        ydl = YoutubeDL(ydl_opts)
-        info = ydl.extract_info(url, False)
-        duration = round(info["duration"] / 60)
-        title= info["title"]
-        if int(duration) > DURATION_LIMIT:
-            await msg.edit(f"❌ Videos longer than {DURATION_LIMIT} minute(s) aren't allowed, the provided video is {duration} minute(s)")
-            await mp.delete(msg)
-            return
-        # data里加入5 文件id/6图片url
-        data={1:title, 2:url, 3:"youtube", 4:user,5:info['id'],6:info['thumbnails'][0]['url']}
-        playlist.append(data)
-        group_call = mp.group_call
-        client = group_call.client
-        if len(playlist) == 1:
-            m_status = await msg.edit(
-                f"{emoji.INBOX_TRAY} Downloading and Processing..."
-            )
-            await mp.download_audio(playlist[0])
-            if 1 in RADIO:
-                if group_call:
-                    group_call.input_filename = ''
-                    RADIO.remove(1)
-                    RADIO.add(0)
-                process = FFMPEG_PROCESSES.get(CHAT)
-                if process:
-                    process.send_signal(signal.SIGTERM)
-            if not group_call.is_connected:
-                await mp.start_call()
-            file=playlist[0][5]
-            group_call.input_filename = os.path.join(
-                client.workdir,
-                DEFAULT_DOWNLOAD_DIR,
-                f"{file}.raw"
-            )
-
-            await m_status.delete()
-            print(f"- START PLAYING: {playlist[0][1]}")
-            await mp.send_photo(playlist[0])
-        else:
-            await msg.delete()
-        if not playlist:
-            pl = f"{emoji.NO_ENTRY} Empty playlist"
-        else:
-            pl = f"{emoji.PLAY_BUTTON} **Playlist**:\n" + "\n".join([
-                f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}"
-                for i, x in enumerate(playlist)
-                ])
-        for track in playlist[:2]:
-            await mp.download_audio(track)
-        if LOG_GROUP:
-            await mp.send_playlist()
