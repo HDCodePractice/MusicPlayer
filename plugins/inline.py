@@ -1,6 +1,6 @@
 #MIT License
 
-#Copyright (c) 2021 SUBIN
+#Copyright (c) 2021 SUBIN 老房东 Sichengthebest
 
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -85,7 +85,7 @@ async def search(client, query):
             await query.answer(
                 results=answers,
                 cache_time=0,
-                switch_pm_text=("Nothing found"),
+                switch_pm_text=("Nothing found\n啥么都没找到"),
                 switch_pm_parameter="",
             )
 

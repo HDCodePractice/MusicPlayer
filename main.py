@@ -1,6 +1,6 @@
 #MIT License
 
-#Copyright (c) 2021 SUBIN
+#Copyright (c) 2021 SUBIN 老房东 Sichengthebest
 
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -46,87 +46,87 @@ bot.send(
         commands=[
             types.BotCommand(
                 command="start",
-                description="Check if bot alive"
+                description="Check if bot alive//看一看机器人还是不是活着的"
             ),
             types.BotCommand(
                 command="help",
-                description="显示帮助信息"
+                description="Show the help message//显示帮助信息"
             ),
             types.BotCommand(
                 command="play",
-                description="请用/play 歌曲名 来点播歌曲"
+                description="Play a song. Syntax: /play <song name> //请用 /play 歌曲名 来点播歌曲"
             ),
             types.BotCommand(
                 command="dplay",
-                description="Play song from Deezer"
+                description="Play song from Deezer//从Deezer播放歌曲"
             ),
             types.BotCommand(
                 command="player",
-                description="Shows current playing song with controls"
+                description="Shows current playing song with controls//查看正在播放的歌曲"
             ),
             types.BotCommand(
                 command="playlist",
-                description="Shows the playlist"
+                description="Shows the playlist//查看playlist"
             ),
             types.BotCommand(
                 command="skip",
-                description="Skip the current song"
+                description="Skip the current song (reserved for admin)//跳过当前的歌曲（管理员专用）"
             ),
             types.BotCommand(
                 command="join",
-                description="Join VC"
+                description="Join VC (reserved for admin)//让我加入voice chat（管理员专用）"
             ),
             types.BotCommand(
                 command="leave",
-                description="Leave from VC"
+                description="Leave from VC (reserved for admin)//让我离开voice chat（管理员专用）"
             ),
             types.BotCommand(
                 command="vc",
-                description="Ckeck if VC is joined"
+                description="Check if VC is joined (reserved for admin)（管理员专用）"
             ),
             types.BotCommand(
                 command="stop",
-                description="Stops Playing"
+                description="Stops Playing (reserved for admin)//停止播放（管理员专用）"
             ),
             types.BotCommand(
                 command="radio",
-                description="Start radio / Live stream"
+                description="Start radio/Live stream (reserved for admin)//开启收音机/直播（管理员专用）"
             ),
             types.BotCommand(
                 command="stopradio",
-                description="Stops radio/Livestream"
+                description="Stops radio/Livestream (reserved for admin)//停止收音机/直播（管理员专用）"
             ),
             types.BotCommand(
                 command="replay",
-                description="Replay from beggining"
+                description="Replay from beginning (reserved for admin)//从新开始播放playlist（管理员专用）"
             ),
             types.BotCommand(
                 command="clean",
-                description="Cleans RAW files"
+                description="Cleans RAW files (reserved for admin)"
             ),
             types.BotCommand(
                 command="pause",
-                description="Pause the song"
+                description="Pause the song (reserved for admin)//暂停歌曲（管理员专用）"
             ),
             types.BotCommand(
                 command="resume",
-                description="Resume the paused song"
+                description="Resume the paused song (reserved for admin)//从新开始放歌曲（管理员专用）"
             ),
             types.BotCommand(
                 command="mute",
-                description="Mute in VC"
+                description="Mute in VC (reserved for admin)//静音（管理员专用）"
             ),
             types.BotCommand(
                 command="unmute",
-                description="Unmute in VC"
+                description="Unmute in VC (reserved for admin)//取消静音（管理员专用）"
             ),
             types.BotCommand(
                 command="restart",
-                description="Restart the bot"
+                description="Restart the bot (reserved for admin)//从起机器人（管理员专用）"
             ),
             types.BotCommand(
                 command="vol",
-                description="变更音量(管理员专用)"
+                description="Change volume (reserved for admin)//变更音量（管理员专用）"
             )
         ]
     )
