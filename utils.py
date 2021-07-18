@@ -82,7 +82,7 @@ class MusicPlayer(object):
 
     async def send_playlist(self):
         if not playlist:
-            pl = f"{emoji.NO_ENTRY} 播放列表里嘛都木有"
+            pl = f"{emoji.NO_ENTRY} Playlist is empty!!\n{emoji.NO_ENTRY} 播放列表里嘛都木有"
         else:
             pl = f"{emoji.PLAY_BUTTON} **Playlist**:\n" + "\n".join([
                 f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4].split('(tg://user?id=')[0]}\n"
@@ -215,7 +215,7 @@ class MusicPlayer(object):
                 await group_call.start(CHAT)
                 break
             else:
-                print("No File Found\nSleeping")
+                print("No File Found\nSleeping...\n\n文件没找到\n晚安...")
                 process = FFMPEG_PROCESSES.get(CHAT)
                 if process:
                     process.send_signal(signal.SIGTERM)
