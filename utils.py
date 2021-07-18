@@ -136,6 +136,8 @@ class MusicPlayer(object):
             chat_id = LOG_GROUP
             buttons = [[
                 InlineKeyboardButton('再次点播', callback_data=f'research={track[2]}'),
+                InlineKeyboardButton('加入我的收藏', callback_data=f'addme={track[2]}'),
+            ],[
                 InlineKeyboardButton('来源',url=track[2])
             ]]
             reply_markup = InlineKeyboardMarkup(buttons)

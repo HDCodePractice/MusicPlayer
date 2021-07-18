@@ -24,13 +24,14 @@ from youtube_search import YoutubeSearch
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram.methods.messages.download_media import DEFAULT_DOWNLOAD_DIR
 from pyrogram import Client, emoji
-from utils import DELAY, mp,RADIO,FFMPEG_PROCESSES
+from utils import DELAY, mp,RADIO,FFMPEG_PROCESSES,USERNAME
 from config import Config
 from asyncio import sleep
 from youtube_dl import YoutubeDL
+from pyrogram.errors.exceptions.bad_request_400 import UserIsBlocked,BadRequest
 import signal
 import os
-
+U = USERNAME
 CHAT=Config.CHAT
 DURATION_LIMIT = Config.DURATION_LIMIT
 playlist=Config.playlist
@@ -70,7 +71,24 @@ You can also use /dplay <song name> to play a song from Deezer.</b>
 
 @Client.on_callback_query()
 async def cb_handler(client: Client, query: CallbackQuery):
-    if query.data.startswith("research"):
+    if query.data.startswith("addme="):
+        url = query.data.split("addme=")[1]
+        photo = query.message.photo.thumbs[-1].file_id
+        caption = query.message.caption
+        reply_markup= InlineKeyboardMarkup([[
+            InlineKeyboardButton('再次点播', callback_data=f'research={url}')
+        ]])
+        try:
+            await client.send_photo(
+                query.from_user.id,
+                photo=photo,
+                caption= caption,
+                reply_markup=reply_markup
+            )
+        except BadRequest:
+            await query.answer(f"请添加 @{U} 才可以加入收藏",show_alert=True)
+        return
+    elif query.data.startswith("research="):
         url = query.data.split("research=")[1]
         user=f"[{query.from_user.first_name}](tg://user?id={query.from_user.id})"
         try:
