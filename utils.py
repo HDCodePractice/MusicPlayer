@@ -1,6 +1,6 @@
 #MIT License
 
-#Copyright (c) 2021 SUBIN
+#Copyright (c) 2021 SUBIN 老房东
 
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,7 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 import os
-
+import asyncio
 from pyrogram.types import InlineKeyboardButton,InlineKeyboardMarkup
 from config import Config
 import ffmpeg
@@ -64,11 +64,13 @@ ydl_opts = {
     "outtmpl": "downloads/%(id)s.%(ext)s",
 }
 ydl = YoutubeDL(ydl_opts)
-def youtube(url: str) -> str:
+async def youtube(url: str) -> str:
     info = ydl.extract_info(url, False)
     duration = round(info["duration"] / 60)
     try:
-        ydl.download([url])
+        loop = asyncio.get_event_loop()
+        await loop.run_in_executor(None, ydl.download, [url])
+        # ydl.download([url])
     except Exception as e:
         print(e)
         pass
@@ -165,7 +167,7 @@ class MusicPlayer(object):
             if song[3] == "telegram":
                 original_file = await bot.download_media(f"{song[2]}")
             elif song[3] == "youtube":
-                original_file = youtube(song[2])
+                original_file = await youtube(song[2])
             else:
                 original_file=wget.download(song[2])
             ffmpeg.input(original_file).output(
