@@ -28,12 +28,14 @@ if REPLY_MESSAGE is not None:
         Config.SESSION,
         Config.API_ID,
         Config.API_HASH,
-        plugins=dict(root="userplugins")
+        plugins=dict(root="userplugins"),
+        workdir=Config.WORKDIR
         )
 else:
     USER = Client(
         Config.SESSION,
         Config.API_ID,
-        Config.API_HASH
+        Config.API_HASH,
+        workdir=Config.WORKDIR
         )
 USER.start()

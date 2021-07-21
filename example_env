@@ -1,0 +1,12 @@
+SESSION_STRING=session
+BOT_TOKEN=<your_bot_token>
+API_ID=<your_api_id>
+API_HASH=<your_api_hash>
+ARQ_API_KEY=<your_arq_api_key>
+MAXIMUM_DURATION=120
+STREAM_URL=<your_stream_url>
+ADMINS=<your_admins>
+CHAT=<your_chat>
+LOG_GROUP=<your_log_group>
+ADMIN_ONLY=N
+REPLY_MESSAGE=
