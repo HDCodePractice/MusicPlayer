@@ -35,13 +35,50 @@ Build Docker Image
 docker build -t musicplayer:latest https://github.com/HDCodePractice/MusicPlayer.git#main
 ```
 
-测试容器的运行
+#### 测试容器的运行
 
 ```
-docker run --rm --name test -v `pwd`:/data --env-file local.env -it musicplayer bash
+docker run --name mpbot -v `pwd`:/data --env-file local.env -it musicplayer
 ```
 
 这时会让你输入登录相关信息后，就可以运行了。
+
+
+#### 启动和停止容器
+
+一但容器运行正常后，你可以启动和停止容器
+
+```
+docker start mpbot
+docker stop mpbot
+docker restart mpbot
+```
+
+#### 查看运行中的容器
+
+```
+docker stats 
+docker ps -a
+```
+
+#### 进入容器
+
+```
+docker exec -it mpbot /bin/bash
+```
+
+#### 删除容器
+
+```
+docker rm mpbot
+```
+
+#### 查看容器的日志
+
+```
+docker logs -f mpbot
+```
+
 
 # Vars:
 1. `API_ID` : Get From my.telegram.org
