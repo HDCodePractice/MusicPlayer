@@ -31,6 +31,7 @@ bot = Client(
     Config.API_ID,
     Config.API_HASH,
     bot_token=Config.BOT_TOKEN,
+    workdir=Config.WORKDIR,
     plugins=dict(root="plugins")
 )
 if not os.path.isdir("./downloads"):

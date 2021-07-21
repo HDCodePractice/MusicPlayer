@@ -27,6 +27,22 @@ pip3 install -r requirements.txt
 python3 main.py
 ```
 
+### 部署到Docker
+
+Build Docker Image
+
+```
+docker build -t musicplayer:latest https://github.com/HDCodePractice/MusicPlayer.git#main
+```
+
+测试容器的运行
+
+```
+docker run --rm --name test -v `pwd`:/data --env-file local.env -it musicplayer bash
+```
+
+这时会让你输入登录相关信息后，就可以运行了。
+
 # Vars:
 1. `API_ID` : Get From my.telegram.org
 2. `API_HASH` : Get from my.telegram.org

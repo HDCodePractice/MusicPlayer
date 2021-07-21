@@ -37,6 +37,7 @@ bot = Client(
     "Musicplayervc",
     Config.API_ID,
     Config.API_HASH,
+    workdir=Config.WORKDIR,
     bot_token=Config.BOT_TOKEN
 )
 bot.start()
