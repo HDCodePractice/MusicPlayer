@@ -79,6 +79,40 @@ docker rm mpbot
 docker logs -f mpbot
 ```
 
+### 使用dcoker-compose部署
+
+```
+git clone https://github.com/HDCodePractice/MusicPlayer.git
+docker-compose build
+```
+
+新建一个 local.env 文件。运行初始化
+
+```
+docker-compose run mpbot
+```
+
+录入一下手机号和登录信息。
+
+启动服务
+
+```
+docker-compose up -d
+```
+
+进入服务
+
+```
+docker-compose exec mpbot bash
+```
+
+停止服务
+
+```
+docker-compose stop
+```
+
+参考资料： [Docker Reference](https://docs.docker.com/reference/)
 
 # Vars:
 1. `API_ID` : Get From my.telegram.org
