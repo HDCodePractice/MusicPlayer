@@ -1,6 +1,6 @@
 #MIT License
 
-#Copyright (c) 2021 SUBIN
+#Copyright (c) 2021 SUBIN 老房东 Sichengthebest
 
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ You can also use /dplay <song name> to play a song from Deezer.</b>
 
 **Common Commands**:
 
-**/play**  Reply to an audio file or YouTube link to play it or use /play <song name>.
+**/play or /y**  Reply to an audio file or YouTube link to play it or use /play <song name>.
 **/dplay** Play music from Deezer, Use /dplay <song name>
 **/player**  Show current playing song.
 **/help** Show help for commands
@@ -60,14 +60,14 @@ You can also use /dplay <song name> to play a song from Deezer.</b>
 **/mute**  Mute in VC.
 **/unmute**  Unmute in VC.
 **/restart** Restarts the Bot.
-==========================
-使用 /play <song name> 或使用 /play 作为对音频文件或 YouTube 链接的回复。
+=======================
+<b>使用 /play <song name> 或使用 /play 作为对音频文件或 YouTube 链接的回复。
 
 您还可以使用 /dplay <song name> 播放 Deezer 中的歌曲。</b>
 
 **常用命令**：
 
-**/play** 回复音频文件或 YouTube 链接以播放它或使用 /play <歌曲名称>。
+**/play 或 /y** 回复音频文件或 YouTube 链接以播放它或使用 /play <歌曲名称>。
 **/dplay** 从 Deezer 播放音乐，使用 /dplay <歌曲名称>
 **/player** 显示当前播放的歌曲。
 **/help** 显示命令帮助

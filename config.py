@@ -46,7 +46,9 @@ if match:
 else:
     finalurl=STREAM
 
+
 class Config:
+    WORKDIR=os.getcwd()
     ADMIN = os.environ.get("ADMINS", '')
     ADMINS = [int(admin) if re.search('^\d+$', admin) else admin for admin in (ADMIN).split()]
     API_ID = int(os.environ.get("API_ID", ''))
