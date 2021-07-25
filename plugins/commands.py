@@ -60,7 +60,7 @@ You can also use /dplay <song name> to play a song from Deezer.</b>
 **/mute**  Mute in VC.
 **/unmute**  Unmute in VC.
 **/restart** Restarts the Bot.
-==========================
+=======================
 <b>使用 /play <song name> 或使用 /play 作为对音频文件或 YouTube 链接的回复。
 
 您还可以使用 /dplay <song name> 播放 Deezer 中的歌曲。</b>
