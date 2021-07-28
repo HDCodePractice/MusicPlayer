@@ -89,7 +89,7 @@ docker-compose build
 新建一个 local.env 文件。运行初始化
 
 ```
-docker-compose run mpbot
+docker-compose run --rm  mpbot
 ```
 
 录入一下手机号和登录信息。
@@ -109,7 +109,7 @@ docker-compose exec mpbot bash
 停止服务
 
 ```
-docker-compose stop
+docker-compose down
 ```
 
 参考资料： [Docker Reference](https://docs.docker.com/reference/)
