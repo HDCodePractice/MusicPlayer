@@ -2,7 +2,7 @@ Pyrogram
 TgCrypto
 ffmpeg-python
 psutil
-pytgcalls[pyrogram]
+pytgcalls
 wheel
 python-arq
 youtube_dl
