@@ -37,4 +37,4 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/HDCodePractice/musicplayer:latest
+          tags: ghcr.io/hdcodepractice/musicplayer:latest
