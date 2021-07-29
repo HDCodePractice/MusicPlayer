@@ -1,8 +1,7 @@
 version: "3.9"
 services:
     mpbot:
-        build: .
-        image: musicplayer:latest
+        image: hdcola/musicplayer:latest
         volumes:
             - ".:/data"
         env_file: 
