@@ -2,9 +2,7 @@ FROM python:3.9.6-buster
 
 RUN apt-get update && apt upgrade -y
 RUN apt-get install git curl ffmpeg -y
-# RUN pip3 install -U pip
 RUN cd /
-# RUN git clone https://github.com/HDCodePractice/MusicPlayer.git
 COPY . /MusicPlayer/
 RUN cd MusicPlayer
 WORKDIR /MusicPlayer
