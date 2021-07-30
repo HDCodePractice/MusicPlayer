@@ -1,6 +1,6 @@
 #MIT License
 
-#Copyright (c) 2021 SUBIN
+#Copyright (c) 2021 SUBIN 老房东
 
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -71,7 +71,7 @@ You can also use /dplay <song name> to play a song from Deezer.</b>
 
 @Client.on_callback_query()
 async def cb_handler(client: Client, query: CallbackQuery):
-    if query.data.startswith("addme="):
+    if query.data.startswith("addme="): # 为自己添加歌曲收藏
         url = query.data.split("addme=")[1]
         photo = query.message.photo.thumbs[-1].file_id
         caption = query.message.caption
@@ -87,8 +87,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
             )
         except BadRequest:
             await query.answer(f"请添加 @{U} 才可以加入收藏",show_alert=True)
+        await query.answer("加入收藏成功~",show_alert=False)
         return
-    elif query.data.startswith("research="):
+
+    elif query.data.startswith("research="):  # 再次点播歌曲
         url = query.data.split("research=")[1]
         user=f"[{query.from_user.first_name}](tg://user?id={query.from_user.id})"
         try:
@@ -97,14 +99,14 @@ async def cb_handler(client: Client, query: CallbackQuery):
             results = YoutubeSearch(ytquery, max_results=1).to_dict()
             url = f"https://youtube.com{results[0]['url_suffix']}"
         except Exception as e:
-            await msg.edit("YouTube里已经找不到这个歌曲了...")
+            await query.answer("YouTube里已经找不到这个歌曲了",show_alert=True)
             await mp.delete(msg)
             return
+        await query.answer("再次点播成功~",show_alert=True)
         ydl_opts = {
             "geo-bypass": True,
             "nocheckcertificate": True
         }
-        print(f"下载url{url}")
         ydl = YoutubeDL(ydl_opts)
         info = ydl.extract_info(url, False)
         duration = round(info["duration"] / 60)
