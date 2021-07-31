@@ -64,10 +64,10 @@ bot.send(
                 command="play",
                 description="Play a song. Syntax: /play <song name> //请用 /play 歌曲名 来点播歌曲"
             ),
-            types.BotCommand(
-                command="dplay",
-                description="Play song from Deezer//从Deezer播放歌曲"
-            ),
+            # types.BotCommand(
+            #     command="dplay",
+            #     description="Play song from Deezer//从Deezer播放歌曲"
+            # ),
             types.BotCommand(
                 command="player",
                 description="Shows current playing song with controls//查看正在播放的歌曲"
@@ -88,10 +88,10 @@ bot.send(
                 command="leave",
                 description="Leave from VC (reserved for admin)//让我离开voice chat（管理员专用）"
             ),
-            types.BotCommand(
-                command="vc",
-                description="Check if VC is joined (reserved for admin)（管理员专用）"
-            ),
+            # types.BotCommand(
+            #     command="vc",
+            #     description="Check if VC is joined (reserved for admin)（管理员专用）"
+            # ),
             types.BotCommand(
                 command="stop",
                 description="Stops Playing (reserved for admin)//停止播放（管理员专用）"
@@ -106,11 +106,11 @@ bot.send(
             ),
             types.BotCommand(
                 command="replay",
-                description="Replay from beginning (reserved for admin)//从新开始播放playlist（管理员专用）"
+                description="Replay from beginning (reserved for admin)//重新开始播放playlist（管理员专用）"
             ),
             types.BotCommand(
                 command="clean",
-                description="Cleans RAW files (reserved for admin)"
+                description="Cleans RAW files (reserved for admin)//清除缓存文件(管理员专用)"
             ),
             types.BotCommand(
                 command="pause",
@@ -118,24 +118,24 @@ bot.send(
             ),
             types.BotCommand(
                 command="resume",
-                description="Resume the paused song (reserved for admin)//从新开始放歌曲（管理员专用）"
+                description="Resume the paused song (reserved for admin)//重新开始放歌曲（管理员专用）"
             ),
-            types.BotCommand(
-                command="mute",
-                description="Mute in VC (reserved for admin)//静音（管理员专用）"
-            ),
-            types.BotCommand(
-                command="unmute",
-                description="Unmute in VC (reserved for admin)//取消静音（管理员专用）"
-            ),
+            # types.BotCommand(
+            #     command="mute",
+            #     description="Mute in VC (reserved for admin)//静音（管理员专用）"
+            # ),
+            # types.BotCommand(
+            #     command="unmute",
+            #     description="Unmute in VC (reserved for admin)//取消静音（管理员专用）"
+            # ),
             types.BotCommand(
                 command="restart",
                 description="Restart the bot (reserved for admin)//从起机器人（管理员专用）"
             ),
-            types.BotCommand(
-                command="vol",
-                description="Change volume (reserved for admin)//变更音量（管理员专用）"
-            )
+            # types.BotCommand(
+            #     command="vol",
+            #     description="Change volume (reserved for admin)//变更音量（管理员专用）"
+            # )
         ]
     )
 )
