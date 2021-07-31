@@ -49,7 +49,7 @@ playlist=Config.playlist
 @Client.on_message(filters.command(["play", f"play@{U}","y"]) & (filters.chat([CHAT,LOG_GROUP]) | filters.private) | filters.audio & filters.private)
 async def yplay(_, message: Message):
     if ADMIN_ONLY == "Y":
-        admins=Config.ADMIN
+        admins=Config.ADMINS
         grpadmins=await _.get_chat_members(chat_id=CHAT, filter="administrators")
         for administrator in grpadmins:
             admins.append(administrator.user.id)
