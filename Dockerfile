@@ -1,7 +1,7 @@
-FROM python:3.9.6-buster
+FROM python:latest
 
 RUN apt-get update && apt upgrade -y
-RUN apt-get install git curl ffmpeg -y
+RUN apt-get install curl ffmpeg -y
 RUN cd /
 COPY . /MusicPlayer/
 RUN cd MusicPlayer
