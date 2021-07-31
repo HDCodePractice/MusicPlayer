@@ -25,8 +25,10 @@ from pyrogram.types import InlineKeyboardButton,InlineKeyboardMarkup
 from config import Config
 import ffmpeg
 from pyrogram import emoji
+from pyrogram.utils import MAX_CHANNEL_ID
 from pyrogram.methods.messages.download_media import DEFAULT_DOWNLOAD_DIR
-from pytgcalls import GroupCall
+from pytgcalls import GroupCallFactory, GroupCallFileAction
+# from pytgcalls import GroupCall
 import signal
 import wget
 from asyncio import sleep
@@ -79,7 +81,7 @@ async def youtube(url: str) -> str:
 
 class MusicPlayer(object):
     def __init__(self):
-        self.group_call = GroupCall(USER, path_to_log_file='')
+        self.group_call = GroupCallFactory(USER).get_file_group_call()
         self.chat_id = None
 
 
@@ -183,7 +185,7 @@ class MusicPlayer(object):
 
 
     async def start_radio(self):
-        group_call = mp.group_call
+        group_call = self.group_call
         if group_call.is_connected:
             playlist.clear()   
             group_call.input_filename = ''
@@ -237,7 +239,7 @@ class MusicPlayer(object):
                 continue
 
     async def stop_radio(self):
-        group_call = mp.group_call
+        group_call = self.group_call
         if group_call:
             playlist.clear()   
             group_call.input_filename = ''
@@ -254,7 +256,7 @@ class MusicPlayer(object):
             process.send_signal(signal.SIGTERM)
 
     async def start_call(self):
-        group_call = mp.group_call
+        group_call = self.group_call
         await group_call.start(CHAT)
     
     async def delete(self, message):
@@ -274,9 +276,9 @@ mp = MusicPlayer()
 # pytgcalls handlers
 
 @mp.group_call.on_network_status_changed
-async def network_status_changed_handler(gc: GroupCall, is_connected: bool):
+async def network_status_changed_handler(context, is_connected: bool):
     if is_connected:
-        mp.chat_id = int("-100" + str(gc.full_chat.id))
+        mp.chat_id = MAX_CHANNEL_ID - context.full_chat.id
     else:
         mp.chat_id = None
 
