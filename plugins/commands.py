@@ -30,7 +30,22 @@ U=USERNAME
 CHAT=Config.CHAT
 LOG_GROUP=Config.LOG_GROUP
 msg=Config.msg
-HOME_TEXT = "<b>Hello, [{}](tg://user?id={})\n\nI am HDMusicPlayer 1.0 which plays music in Channels and Groups 24/7.\n\nI can even Stream Youtube Live in Your Voicechat.\n\nHit /help to know about available commands.</b>\n==========================\n<b>你好，[{}](tg://user?id={})\n\n我是 HDMusicPlayer 1.0，它可以全天在频道和组中播放音乐。\n\n我甚至可以在你的语音聊天里放Youtube直播视频。\n\n点击 /help 了解可用命令。</b>"
+HOME_TEXT = """<b>Hello, [{}](tg://user?id={})
+
+I am HDMusicPlayer 1.1.0 which plays music in Channels and Groups 24/7.
+
+I can even Stream Youtube Live in Your Voicechat.
+
+Hit /help to know about available commands.</b>
+
+==========================
+<b>你好，[{}](tg://user?id={})
+
+我是 HDMusicPlayer 1.1.0，它可以全天在频道和组中播放音乐。
+
+我甚至可以在你的语音聊天里放Youtube直播视频。
+
+点击 /help 了解可用命令。</b>"""
 HELP = """
 
 <b>Use /play <song name> or use /play as a reply to an audio file or youtube link.</b>
@@ -94,7 +109,12 @@ async def start(client, message:Message):
     ]
     ]
     reply_markup = InlineKeyboardMarkup(buttons)
-    m=await message.reply(HOME_TEXT.format(message.from_user.first_name, message.from_user.id), reply_markup=reply_markup)
+    m=await message.reply(HOME_TEXT.format(
+        message.from_user.first_name, 
+        message.from_user.id, 
+        message.from_user.first_name, 
+        message.from_user.id), 
+        reply_markup=reply_markup)
     await mp.delete(m)
     await message.delete()
 
