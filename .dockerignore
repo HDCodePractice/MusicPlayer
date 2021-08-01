@@ -5,3 +5,5 @@
 unknown_errors.txt
 *.session-journal
 *.env
+downloads
+__pycache__/
