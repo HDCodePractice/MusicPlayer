@@ -64,10 +64,6 @@ bot.send(
                 command="play",
                 description="Play a song. Syntax: /play <song name> //请用 /play 歌曲名 来点播歌曲"
             ),
-            # types.BotCommand(
-            #     command="dplay",
-            #     description="Play song from Deezer//从Deezer播放歌曲"
-            # ),
             types.BotCommand(
                 command="player",
                 description="Shows current playing song with controls//查看正在播放的歌曲"
