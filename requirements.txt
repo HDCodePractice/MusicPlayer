@@ -1,4 +1,5 @@
 TgCrypto
+aiohttp
 ffmpeg-python
 psutil
 pytgcalls[pyrogram]
