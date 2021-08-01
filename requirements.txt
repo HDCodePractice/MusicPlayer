@@ -3,7 +3,6 @@ ffmpeg-python
 psutil
 pytgcalls[pyrogram]
 wheel
-python-arq
 youtube_dl
 youtube_search_python
 youtube_search
