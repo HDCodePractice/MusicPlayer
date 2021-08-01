@@ -39,14 +39,11 @@ LOG_GROUP=Config.LOG_GROUP
 
 HELP = """
 
-<b>Use /play <song name> or use /play as a reply to an audio file or youtube link.
-
-You can also use /dplay <song name> to play a song from Deezer.</b>
+<b>Use /play <song name> or use /play as a reply to an audio file or youtube link.</b>
 
 **Common Commands**:
 
 **/play**  Reply to an audio file or YouTube link to play it or use /play <song name>.
-**/dplay** Play music from Deezer, Use /dplay <song name>
 **/player**  Show current playing song.
 **/help** Show help for commands
 **/playlist** Shows the playlist.
