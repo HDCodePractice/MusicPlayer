@@ -28,7 +28,9 @@ if REPLY_MESSAGE is not None:
         Config.SESSION,
         Config.API_ID,
         Config.API_HASH,
-        plugins=dict(root="userplugins"),
+        plugins=dict(
+            root="userplugins",
+            include=["reply"]),
         workdir=Config.WORKDIR
         )
 else:

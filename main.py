@@ -32,14 +32,16 @@ bot = Client(
     Config.API_HASH,
     bot_token=Config.BOT_TOKEN,
     workdir=Config.WORKDIR,
-    plugins=dict(root="plugins",
+    plugins=dict(
+        root="plugins",
         include=[
-        "callback",
-        "commands",
-        "inline",
-        "player",
-        "radio"
-        ])
+            "callback",
+            "commands",
+            "inline",
+            "player",
+            "radio"
+        ]
+    )
 )
 if not os.path.isdir("./downloads"):
     os.makedirs("./downloads")
