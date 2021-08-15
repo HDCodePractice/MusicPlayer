@@ -1,7 +1,6 @@
 FROM python:latest
 
-RUN apt-get update && apt upgrade -y
-RUN apt-get install curl ffmpeg -y
+RUN apt-get update && apt upgrade -y && apt-get install curl ffmpeg -y
 RUN cd /
 COPY . /MusicPlayer/
 RUN cd MusicPlayer
