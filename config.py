@@ -20,11 +20,43 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 import os
+from environs import Env
 import re
+from io import StringIO
 from dotenv import load_dotenv
 
-if os.path.exists("local.env"):
-    load_dotenv("local.env")
+import requests
+from base64 import b64encode
+
+def get_doppler_env(token):
+    token_b64 = b64encode(f"{token}:".encode()).decode()
+
+    url = "https://api.doppler.com/v3/configs/config/secrets/download"
+
+    querystring = {"format":"env"}
+
+    headers = {
+        "Accept": "application/json",
+        "Authorization": f"Basic {token_b64}"
+    }
+    try:
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        if response.status_code == 200:
+            return response.text
+    except Exception:
+        pass
+    return ""
+
+env = Env()
+env.read_env(f"{os.getcwd()}/local.env")
+
+doppler_token = env.str('DOPPLER_TOKEN', default='')
+
+if len(doppler_token) > 0 :
+    response = get_doppler_env(doppler_token)
+    if len(response) > 0:
+        config = StringIO(response)
+        load_dotenv(stream=config)
 
 from youtube_dl import YoutubeDL
 ydl_opts = {
@@ -72,4 +104,3 @@ class Config:
     SESSION = os.environ.get("SESSION_STRING", "")
     playlist=[]
     msg = {}
-
