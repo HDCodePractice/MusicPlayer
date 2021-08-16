@@ -41,7 +41,7 @@ Hit /help to know about available commands.</b>
 ==========================
 <b>你好，[{}](tg://user?id={})
 
-我是 HDMusicPlayer 1.1.0，它可以全天在频道和组中播放音乐。
+我是 MusicPlayer 1.1.0，它可以全天在频道和组中播放音乐。
 
 我甚至可以在你的语音聊天里放Youtube直播视频。
 
@@ -53,24 +53,12 @@ HELP = """
 **Common Commands**:
 
 **/play or /y**  Reply to an audio file or YouTube link to play it or use /play <song name>.
-**/player**  Show current playing song.
 **/help** Show help for commands
 **/playlist** Shows the playlist.
 
 **Admin Commands**:
 **/skip** [n] ...  Skip current or n where n >= 2
-**/join**  Join voice chat.
-**/leave**  Leave current voice chat
-**/vc**  Check which VC is joined.
-**/stop**  Stop playing.
-**/radio** Start Radio.
-**/stopradio** Stops Radio Stream.
-**/replay**  Play from the beginning.
 **/clean** Remove unused RAW PCM files.
-**/pause** Pause playing.
-**/resume** Resume playing.
-**/mute**  Mute in VC.
-**/unmute**  Unmute in VC.
 **/restart** Restarts the Bot.
 =======================
 <b>使用 /play <song name> 或使用 /play 作为对音频文件或 YouTube 链接的回复。</b>
@@ -78,24 +66,12 @@ HELP = """
 **常用命令**：
 
 **/play 或 /y** 回复音频文件或 YouTube 链接以播放它或使用 /play <歌曲名称>。
-**/player** 显示当前播放的歌曲。
 **/help** 显示命令帮助
 **/playlist** 显示播放列表。
 
 **管理命令**：
 **/skip** [n] ... 跳过当前或 n，其中 n >= 2
-**/join** 加入语音聊天。
-**/leave** 离开当前语音聊天
-**/vc** 检查加入的VC。
-**/stop** 停止播放。
-**/radio** 开始广播。
-**/stopradio** 停止广播流。
-**/replay** 从头开始播放。
 **/clean** 删除未使用的 RAW PCM 文件。
-**/pause** 暂停播放。
-**/resume** 继续播放。
-**/mute** 在 VC 中静音。
-**/unmute** 在 VC 中取消静音。
 **/restart** 重新启动机器人。
 """
 
