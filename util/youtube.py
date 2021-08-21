@@ -16,7 +16,7 @@ def get_finalurl(url):
     return info["url"]
 
 def get_first_finalurl(url):
-    dl = get_ydl()
+    ydl = get_ydl()
     info = ydl.extract_info(url, download=False)
     return info["formats"][0]["url"]
 

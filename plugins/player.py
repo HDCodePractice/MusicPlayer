@@ -20,6 +20,7 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 import os
+import asyncio
 from youtube_dl import YoutubeDL
 from config import Config
 from pyrogram import Client, filters, emoji
@@ -193,20 +194,17 @@ async def yplay(_, message: Message):
                     group_call.input_filename = ''
                     RADIO.remove(1)
                     RADIO.add(0)
-                process = FFMPEG_PROCESSES.get(CHAT)
-                if process:
-                    process.send_signal(signal.SIGTERM)
             if not group_call.is_connected:
                 await mp.start_call()
-            file=playlist[0][5]
-            group_call.input_filename = os.path.join(
-                client.workdir,
-                DEFAULT_DOWNLOAD_DIR,
-                f"{file}.raw"
+            download_dir = os.path.join(client.workdir, DEFAULT_DOWNLOAD_DIR)
+            afile = os.path.join(
+                download_dir,
+                f"{playlist[0][5]}.m4a"
             )
+            await mp.play_file(afile)
 
             await m_status.delete()
-            print(f"- START PLAYING: {playlist[0][1]}")
+            print(f"- START PLAYING {afile}: {playlist[0][1]}")
             await mp.send_photo(playlist[0])
         else:
             await msg.delete()
