@@ -27,13 +27,14 @@ import ffmpeg
 from pyrogram import emoji
 from pyrogram.utils import MAX_CHANNEL_ID
 from pyrogram.methods.messages.download_media import DEFAULT_DOWNLOAD_DIR
-from pytgcalls import GroupCallFactory, GroupCallFileAction
-# from pytgcalls import GroupCall
+from pytgcalls import GroupCallFactory
+from util.AudioFileFifo import AudioFileFifo
 import signal
 import wget
 from asyncio import sleep
 from pyrogram import Client
 from youtube_dl import YoutubeDL
+from util.youtube import get_first_finalurl, youtube_downaudio
 from os import path
 bot = Client(
     "Musicplayervc",
@@ -80,8 +81,13 @@ async def youtube(url: str) -> str:
     return path.join("downloads", f"{info['id']}.{info['ext']}")
 
 class MusicPlayer(object):
+    CLIENT_TYPE = GroupCallFactory.MTPROTO_CLIENT_TYPE.PYROGRAM
+    fifo_task = None
+
     def __init__(self):
-        self.group_call = GroupCallFactory(USER).get_file_group_call()
+        # self.group_call = GroupCallFactory(USER,self.CLIENT_TYPE).get_file_group_call()
+        self.audio_fifo = AudioFileFifo()
+        self.group_call = GroupCallFactory(USER,self.CLIENT_TYPE).get_raw_group_call()
         self.chat_id = None
 
 
@@ -186,63 +192,39 @@ class MusicPlayer(object):
 
     async def start_radio(self):
         group_call = self.group_call
-        if group_call.is_connected:
-            playlist.clear()   
-            group_call.input_filename = ''
-            await group_call.stop()
-        process = FFMPEG_PROCESSES.get(CHAT)
-        if process:
-            process.send_signal(signal.SIGTERM)
-        station_stream_url = STREAM_URL
-        group_call.input_filename = f'radio-{CHAT}.raw'
-        try:
-            RADIO.remove(0)
-        except:
-            pass
-        try:
-            RADIO.add(1)
-        except:
-            pass
-        if os.path.exists(group_call.input_filename):
-            os.remove(group_call.input_filename)
-        # credits: 看起来fifo不起做用
-        # os.mkfifo(group_call.input_filename)
-        process = ffmpeg.input(station_stream_url).output(
-            group_call.input_filename,
-            format='s16le',
-            acodec='pcm_s16le',
-            ac=2,
-            ar='48k',
-            loglevel='error'
-        ).overwrite_output().run_async()
-        FFMPEG_PROCESSES[CHAT] = process
-        while True:
-            await sleep(5)
-            if os.path.isfile(group_call.input_filename):
-                await group_call.start(CHAT)
-                break
-            else:
-                print("No File Found\nSleeping...\n\n文件没找到\n晚安...")
-                process = FFMPEG_PROCESSES.get(CHAT)
-                if process:
-                    process.send_signal(signal.SIGTERM)
-                await sleep(2)
-                process = ffmpeg.input(station_stream_url).output(
-                    group_call.input_filename,
-                    format='s16le',
-                    acodec='pcm_s16le',
-                    ac=2,
-                    ar='48k',
-                    loglevel='error'
-                    ).overwrite_output().run_async()
-                FFMPEG_PROCESSES[CHAT] = process
-                continue
+        await group_call.stop()
+        if not group_call.is_connected:
+            await group_call.start(CHAT)
+        
+        while not group_call.is_connected:
+            print("wait connect")
+            await asyncio.sleep(1)
+        print(STREAM_URL)
+        afile = await youtube_downaudio(STREAM_URL)
+        print(f"download {afile} fin")
+        audio_fifo = self.audio_fifo
+        if os.path.isfile(afile):
+            self.audio_task = asyncio.create_task(audio_fifo.avdecode(afile))
+            audio_fifo.loop = asyncio.get_event_loop()
+            self.group_call.on_played_data = audio_fifo.on_played_data
+            audio_fifo.on_playout_ended(self.start_radio)
+            try:
+                RADIO.remove(0)
+            except:
+                pass
+            try:
+                RADIO.add(1)
+            except:
+                pass
+        else:
+            print("No File Found\nSleeping...\n\n文件没找到\n晚安...")
+
 
     async def stop_radio(self):
         group_call = self.group_call
         if group_call:
             playlist.clear()   
-            group_call.input_filename = ''
+            self.audio_task.cancel()
             try:
                 RADIO.remove(1)
             except:
@@ -251,9 +233,6 @@ class MusicPlayer(object):
                 RADIO.add(0)
             except:
                 pass
-        process = FFMPEG_PROCESSES.get(CHAT)
-        if process:
-            process.send_signal(signal.SIGTERM)
 
     async def start_call(self):
         group_call = self.group_call
@@ -282,10 +261,10 @@ async def network_status_changed_handler(context, is_connected: bool):
     else:
         mp.chat_id = None
 
-
-@mp.group_call.on_playout_ended
-async def playout_ended_handler(_, __):
-    if not playlist:
-        await mp.start_radio()
-    else:
-        await mp.skip_current_playing()
+# raw group call 没有 ended的回调
+# @mp.group_call.on_playout_ended
+# async def playout_ended_handler(_, __):
+#     if not playlist:
+#         await mp.start_radio()
+#     else:
+#         await mp.skip_current_playing()
