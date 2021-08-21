@@ -66,17 +66,17 @@ ydl_opts = {
 ydl = YoutubeDL(ydl_opts)
 links=[]
 finalurl=""
-STREAM=os.environ.get("STREAM_URL", "https://www.youtube.com/watch?v=rGPXugD0ekU")
-regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
-match = re.match(regex,STREAM)
-if match:
-    meta = ydl.extract_info(STREAM, download=False)
-    formats = meta.get('formats', [meta])
-    for f in formats:
-        links.append(f['url'])
-    finalurl=links[0]
-else:
-    finalurl=STREAM
+finalurl=os.environ.get("STREAM_URL", "https://www.youtube.com/watch?v=rGPXugD0ekU")
+# regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
+# match = re.match(regex,STREAM)
+# if match:
+#     meta = ydl.extract_info(STREAM, download=False)
+#     formats = meta.get('formats', [meta])
+#     for f in formats:
+#         links.append(f['url'])
+#     finalurl=links[0]
+# else:
+#     finalurl=STREAM
 
 
 class Config:
