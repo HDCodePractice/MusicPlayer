@@ -87,7 +87,9 @@ class MusicPlayer(object):
     def __init__(self):
         # self.group_call = GroupCallFactory(USER,self.CLIENT_TYPE).get_file_group_call()
         self.audio_fifo = AudioFileFifo()
-        self.group_call = GroupCallFactory(USER,self.CLIENT_TYPE).get_raw_group_call()
+        self.audio_fifo.loop = asyncio.get_event_loop()
+        self.audio_fifo.on_playout_ended(self.playout_ended_handler)
+        self.group_call = GroupCallFactory(USER,self.CLIENT_TYPE).get_raw_group_call(on_played_data = self.audio_fifo.on_played_data)
         self.chat_id = None
 
 
@@ -199,15 +201,11 @@ class MusicPlayer(object):
         while not group_call.is_connected:
             print("wait connect")
             await asyncio.sleep(1)
-        print(STREAM_URL)
         afile = await youtube_downaudio(STREAM_URL)
         print(f"download {afile} fin")
         audio_fifo = self.audio_fifo
         if os.path.isfile(afile):
             self.audio_task = asyncio.create_task(audio_fifo.avdecode(afile))
-            audio_fifo.loop = asyncio.get_event_loop()
-            self.group_call.on_played_data = audio_fifo.on_played_data
-            audio_fifo.on_playout_ended(self.start_radio)
             try:
                 RADIO.remove(0)
             except:
@@ -245,12 +243,14 @@ class MusicPlayer(object):
                 await message.delete()
             except:
                 pass
-        
 
-
+    async def playout_ended_handler(self):
+        if not playlist:
+            await self.start_radio()
+        else:
+            await self.skip_current_playing()
 
 mp = MusicPlayer()
-
 
 # pytgcalls handlers
 
