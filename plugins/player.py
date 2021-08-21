@@ -539,6 +539,30 @@ async def show_playlist(_, m: Message):
         msg['playlist'] = await m.reply_text(pl)
     await m.delete()
 
+@Client.on_message(filters.command(["radio", f"radio@{USERNAME}"]) & filters.user(ADMINS) & (filters.chat([CHAT,LOG_GROUP]) | filters.private))
+async def radio(client, message: Message):
+    if 1 in RADIO:
+        k=await message.reply_text("Kindly stop existing Radio Stream /stopradio")
+        await mp.delete(k)
+        await message.delete()
+        return
+    await mp.start_radio()
+    k=await message.reply_text(f"Started Radio.")
+    await mp.delete(k)
+    await message.delete()
+
+@Client.on_message(filters.command(['stopradio', f"stopradio@{USERNAME}"]) & filters.user(ADMINS) & (filters.chat([CHAT,LOG_GROUP]) | filters.private))
+async def stop(_, message: Message):
+    if 0 in RADIO:
+        k=await message.reply_text("Kindly start Radio First /radio")
+        await mp.delete(k)
+        await message.delete()
+        return
+    await mp.stop_radio()
+    k=await message.reply_text("Radio stream ended.")
+    await mp.delete(k)
+    await message.delete()
+
 admincmds=[
     "join", "unmute", "mute", "leave", "clean", "vc", "pause", "resume", "stop", "skip", "radio", "stopradio", "replay", "restart",  "vol"
     f"join@{U}", f"unmute@{U}", f"mute@{U}", f"leave@{U}", f"clean@{U}", f"vc@{U}", f"pause@{U}", f"resume@{U}", f"stop@{U}", f"skip@{U}", 
