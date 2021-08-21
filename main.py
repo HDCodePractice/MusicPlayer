@@ -37,8 +37,7 @@ bot = Client(
         "callback",
         "commands",
         "inline",
-        "player",
-        "radio"
+        "player"
         ])
 )
 if not os.path.isdir("./downloads"):
