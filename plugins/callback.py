@@ -134,11 +134,12 @@ async def cb_handler(client: Client, query: CallbackQuery):
             await m_status.delete()
             print(f"- START PLAYING {afile}: {playlist[0][1]}")
             await mp.send_photo(playlist[0])
-            if len(playlist) == 2:
-                await mp.download_audio(playlist[1])
         else:
             await msg.delete()
 
+        if len(playlist) == 2:
+            if playlist[0][7] is not None and playlist[1][7] is None:
+                await mp.download_audio(playlist[1])
         if not playlist:
             pl = f"{emoji.NO_ENTRY} Empty playlist"
         else:

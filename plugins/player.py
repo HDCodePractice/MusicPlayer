@@ -37,7 +37,6 @@ U=USERNAME
 ADMIN_ONLY=Config.ADMIN_ONLY
 DURATION_LIMIT = Config.DURATION_LIMIT
 session = ClientSession()
-playlist=Config.playlist
 msg = Config.msg
 ADMINS=Config.ADMINS
 CHAT=Config.CHAT
@@ -138,11 +137,12 @@ async def yplay(_, message: Message):
             await m_status.delete()
             print(f"- START PLAYING {afile}: {playlist[0][1]}")
             await mp.send_photo(playlist[0])
-            if len(playlist) == 2:
-                await mp.download_audio(playlist[1])
         else:
             await msg.delete()
 
+        if len(playlist) == 2:
+            if playlist[0][7] is not None and playlist[1][7] is None:
+                await mp.download_audio(playlist[1])
         if not playlist:
             pl = f"{emoji.NO_ENTRY} Empty playlist\nPlaylist是空的"
         else:
@@ -495,10 +495,16 @@ async def stop(_, message: Message):
     await mp.delete(k)
     await message.delete()
 
+@Client.on_message(filters.command(["sysinfo", f"sysinfo@{U}"]) & filters.user(ADMINS) & (filters.chat([CHAT,LOG_GROUP]) | filters.private))
+async def sysinfo(_, m: Message):
+    await m.reply(
+        f"{playlist}\n\n{RADIO}"
+    )
+
 admincmds=[
-    "join", "unmute", "mute", "leave", "clean", "vc", "pause", "resume", "stop", "skip", "radio", "stopradio", "replay", "restart",  "vol"
+    "join", "unmute", "mute", "leave", "clean", "vc", "pause", "resume", "stop", "skip", "radio", "stopradio", "replay", "restart",  "vol", "sysinfo",
     f"join@{U}", f"unmute@{U}", f"mute@{U}", f"leave@{U}", f"clean@{U}", f"vc@{U}", f"pause@{U}", f"resume@{U}", f"stop@{U}", f"skip@{U}", 
-    f"radio@{U}", f"stopradio@{U}", f"replay@{U}", f"restart@{U}", f"vol@{U}"]
+    f"radio@{U}", f"stopradio@{U}", f"replay@{U}", f"restart@{U}", f"vol@{U}", f"sysinfo@{U}"]
 
 @Client.on_message(filters.command(admincmds) & ~filters.user(ADMINS) & (filters.chat([CHAT,LOG_GROUP]) | filters.private))
 async def notforu(_, m: Message):
