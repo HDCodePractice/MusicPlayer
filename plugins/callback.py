@@ -113,13 +113,12 @@ async def cb_handler(client: Client, query: CallbackQuery):
             await mp.delete(msg)
             return
         # data里加入5 文件id/6图片url
-        data={1:title, 2:url, 3:"youtube", 4:user,5:info['id'],6:info['thumbnails'][0]['url']}
+        data={1:title, 2:url, 3:"youtube", 4:user,5:info['id'],6:info['thumbnails'][0]['url'],7:None}
         playlist.append(data)
         group_call = mp.group_call
-        client = group_call.client
         if len(playlist) == 1:
             m_status = await msg.edit(
-                f"{emoji.INBOX_TRAY} Downloading and Processing..."
+                f"{emoji.INBOX_TRAY} Downloading and Processing...{emoji.INBOX_TRAY} 小水管在尽力下载..."
             )
             await mp.download_audio(playlist[0])
             if 1 in RADIO:
@@ -127,23 +126,19 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     group_call.input_filename = ''
                     RADIO.remove(1)
                     RADIO.add(0)
-                process = FFMPEG_PROCESSES.get(CHAT)
-                if process:
-                    process.send_signal(signal.SIGTERM)
             if not group_call.is_connected:
                 await mp.start_call()
-            file=playlist[0][5]
-            group_call.input_filename = os.path.join(
-                client.workdir,
-                DEFAULT_DOWNLOAD_DIR,
-                f"{file}.raw"
-            )
+            afile = playlist[0][7]
+            await mp.play_file(afile)
 
             await m_status.delete()
-            print(f"- START PLAYING: {playlist[0][1]}")
+            print(f"- START PLAYING {afile}: {playlist[0][1]}")
             await mp.send_photo(playlist[0])
+            if len(playlist) == 2:
+                await mp.download_audio(playlist[1])
         else:
             await msg.delete()
+
         if not playlist:
             pl = f"{emoji.NO_ENTRY} Empty playlist"
         else:
@@ -151,8 +146,6 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}"
                 for i, x in enumerate(playlist)
                 ])
-        for track in playlist[:2]:
-            await mp.download_audio(track)
         if LOG_GROUP:
             await mp.send_playlist()
 
