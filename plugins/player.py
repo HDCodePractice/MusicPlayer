@@ -59,94 +59,31 @@ async def yplay(_, message: Message):
     type=""
     yturl=""
     ysearch=""
-    if message.audio:
-        type="audio"
-        m_audio = message
-    elif message.reply_to_message and message.reply_to_message.audio:
-        type="audio"
-        m_audio = message.reply_to_message
-    else:
-        if message.reply_to_message:
-            link=message.reply_to_message.text
-            regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
-            match = re.match(regex,link)
-            if match:
-                type="youtube"
-                yturl=link
-        elif " " in message.text:
-            text = message.text.split(" ", 1)
-            query = text[1]
-            regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
-            match = re.match(regex,query)
-            if match:
-                type="youtube"
-                yturl=query
-            else:
-                type="query"
-                ysearch=query
+    if message.reply_to_message:
+        link=message.reply_to_message.text
+        regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
+        match = re.match(regex,link)
+        if match:
+            type="youtube"
+            yturl=link
+    elif " " in message.text:
+        text = message.text.split(" ", 1)
+        query = text[1]
+        regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
+        match = re.match(regex,query)
+        if match:
+            type="youtube"
+            yturl=query
         else:
-            d=await message.reply_text("Please use /play <song name> or /y <song name> to search and play, you can also search on youtube by replying to this bot.\n请使用/play <歌曲名> 或者使用 /y <歌曲名> 来搜索播放，你也可以reply本机器人在youtube上进行搜索")
-            await mp.delete(d)
-            await message.delete()
-            return
+            type="query"
+            ysearch=query
+    else:
+        d=await message.reply_text("Please use /play <song name> or /y <song name> to search and play, you can also search on youtube by replying to this bot.\n请使用/play <歌曲名> 或者使用 /y <歌曲名> 来搜索播放，你也可以reply本机器人在youtube上进行搜索")
+        await mp.delete(d)
+        await message.delete()
+        return
     user=f"[{message.from_user.first_name}](tg://user?id={message.from_user.id})"
     group_call = mp.group_call
-    if type=="audio":
-        if round(m_audio.audio.duration / 60) > DURATION_LIMIT:
-            d=await message.reply_text(f"❌ Audios longer than {DURATION_LIMIT} minute(s) aren't allowed, the provided audio is {round(m_audio.audio.duration/60)} minute(s)\n❌ 此机器人放不了比{DURATION_LIMIT}分钟跟长的歌，此歌有{round(m_audio.audio.duration/60)}分钟长")
-            await mp.delete(d)
-            await message.delete()
-            return
-        if playlist and playlist[-1][2] \
-                == m_audio.audio.file_id:
-            d=await message.reply_text(f"{emoji.ROBOT} Already added in playlist\nPlaylist里已经有了！")
-            await mp.delete(d)
-            await message.delete()
-            return
-        # 加入fileid
-        data={1:m_audio.audio.title, 2:m_audio.audio.file_id, 3:"telegram", 4:user, 5:m_audio.audio.file_id, 6:None}
-        playlist.append(data)
-        if len(playlist) == 1:
-            m_status = await message.reply_text(
-                f"{emoji.INBOX_TRAY} Downloading and Processing...\n{emoji.INBOX_TRAY} 小水管在尽力下载..."
-            )
-            await mp.download_audio(playlist[0])
-            if 1 in RADIO:
-                if group_call:
-                    group_call.input_filename = ''
-                    RADIO.remove(1)
-                    RADIO.add(0)
-                process = FFMPEG_PROCESSES.get(CHAT)
-                if process:
-                    process.send_signal(signal.SIGTERM)
-            if not group_call.is_connected:
-                await mp.start_call()
-            file=playlist[0][5]
-            group_call.input_filename = os.path.join(
-                _.workdir,
-                DEFAULT_DOWNLOAD_DIR,
-                f"{file}.raw"
-            )
-
-            await m_status.delete()
-            print(f"- START PLAYING: {playlist[0][1]}")
-            await mp.send_photo(playlist[0])
-        if not playlist:
-            pl = f"{emoji.NO_ENTRY} Empty playlist\nPlaylist是空的"
-        else:   
-            pl = f"{emoji.PLAY_BUTTON} **Playlist**:\n" + "\n".join([
-                f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}"
-                for i, x in enumerate(playlist)
-                ])
-        for track in playlist[:2]:
-            await mp.download_audio(track)
-        if message.chat.type == "private":
-            await message.reply_text(pl)        
-        elif LOG_GROUP:
-            await mp.send_playlist()
-        else:
-            k=await message.reply_text(pl)
-            await mp.delete(k)
     if type=="youtube" or type=="query":
         if type=="youtube":
             msg = await message.reply_text("⚡️ **Fetching Song From YouTube...**\n⚡️ **正在从YouTube加载歌曲...**")

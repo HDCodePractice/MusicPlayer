@@ -158,25 +158,11 @@ class MusicPlayer(object):
         raw_file = os.path.join(client.workdir, DEFAULT_DOWNLOAD_DIR,
                                 f"{song[5]}.m4a")
         if not os.path.isfile(raw_file):
-            # credits: https://t.me/c/1480232458/6825
-            #os.mkfifo(raw_file)
-            if song[3] == "telegram":
-                original_file = await bot.download_media(f"{song[2]}")
-            elif song[3] == "youtube":
+            if song[3] == "youtube":
                 original_file = await youtube(song[2])
                 print(f"download {original_file}")
             else:
                 original_file=wget.download(song[2])
-            # ffmpeg.input(original_file).output(
-            #     raw_file,
-            #     format='s16le',
-            #     acodec='pcm_s16le',
-            #     ac=2,
-            #     ar='48k',
-            #     loglevel='error'
-            # ).overwrite_output().run()
-            # os.remove(original_file)
-
 
     async def play_file(self, file):
         if self.audio_task is not None:
