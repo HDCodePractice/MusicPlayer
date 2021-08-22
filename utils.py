@@ -60,10 +60,6 @@ DELAY=Config.DELAY
 playlist=Config.playlist
 msg=Config.msg
 
-
-async def youtube(url: str) -> str:
-    return await youtube_downaudio(url)
-
 class MusicPlayer(object):
     CLIENT_TYPE = GroupCallFactory.MTPROTO_CLIENT_TYPE.PYROGRAM
     audio_task = None
@@ -148,7 +144,7 @@ class MusicPlayer(object):
     async def download_audio(self, song):
         original_file = None
         if song[3] == "youtube":
-            original_file = await youtube(song[2])
+            original_file = await youtube_downaudio(song[2])
             print(f"download {original_file} finish")
             song[7]=original_file
         else:

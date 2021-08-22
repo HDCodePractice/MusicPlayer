@@ -40,7 +40,7 @@ async def youtube_downaudio(url: str) -> str:
         await loop.run_in_executor(None, ydl.download, [url])
     except Exception as e:
         print(e)
-        pass
+        return None
     return path.join("downloads", f"{info['id']}.{info['ext']}")
 
 if __name__ == "__main__":
