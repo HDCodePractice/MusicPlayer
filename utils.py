@@ -95,15 +95,8 @@ class MusicPlayer(object):
         if len(playlist) == 1:
             await self.start_radio()
             return
-        client = group_call.client
-        download_dir = os.path.join(client.workdir, DEFAULT_DOWNLOAD_DIR)
-        afile = os.path.join(
-            download_dir,
-            f"{playlist[1][5]}.m4a"
-        )
-        audio_fifo = self.audio_fifo
-        if os.path.exists(afile):       # TODO 如果文件不存在其实就会出问题，这里需要修复
-            self.audio_task = asyncio.create_task(audio_fifo.avdecode(afile))
+        afile = playlist[1][7]
+        await self.play_file(afile) # TODO 如果文件不存在其实就会出问题，这里需要修复
         # remove old track from playlist
         old_track = playlist.pop(0)
         print(f"- START PLAYING: {playlist[0][1]}")
@@ -153,16 +146,14 @@ class MusicPlayer(object):
         return None
 
     async def download_audio(self, song):
-        group_call = self.group_call
-        client = group_call.client
-        raw_file = os.path.join(client.workdir, DEFAULT_DOWNLOAD_DIR,
-                                f"{song[5]}.m4a")
-        if not os.path.isfile(raw_file):
-            if song[3] == "youtube":
-                original_file = await youtube(song[2])
-                print(f"download {original_file}")
-            else:
-                original_file=wget.download(song[2])
+        original_file = None
+        if song[3] == "youtube":
+            original_file = await youtube(song[2])
+            print(f"download {original_file} finish")
+            song[7]=original_file
+        else:
+            original_file=wget.download(song[2])
+        return original_file
 
     async def play_file(self, file):
         if self.audio_task is not None:

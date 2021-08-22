@@ -116,11 +116,10 @@ async def yplay(_, message: Message):
             await mp.delete(k)
             await message.delete()
             return
-        # data里加入5 文件id/6图片url
-        data={1:title, 2:url, 3:"youtube", 4:user,5:info['id'],6:info['thumbnails'][0]['url']}
+        # data里加入5 文件id/6图片url/7文件名
+        data={1:title, 2:url, 3:"youtube", 4:user,5:info['id'],6:info['thumbnails'][0]['url'],7:None}
         playlist.append(data)
         group_call = mp.group_call
-        client = group_call.client
         if len(playlist) == 1:
             m_status = await msg.edit(
                 f"{emoji.INBOX_TRAY} Downloading and Processing...{emoji.INBOX_TRAY} 小水管在尽力下载..."
@@ -133,18 +132,17 @@ async def yplay(_, message: Message):
                     RADIO.add(0)
             if not group_call.is_connected:
                 await mp.start_call()
-            download_dir = os.path.join(client.workdir, DEFAULT_DOWNLOAD_DIR)
-            afile = os.path.join(
-                download_dir,
-                f"{playlist[0][5]}.m4a"
-            )
+            afile = playlist[0][7]
             await mp.play_file(afile)
 
             await m_status.delete()
             print(f"- START PLAYING {afile}: {playlist[0][1]}")
             await mp.send_photo(playlist[0])
+            if len(playlist) == 2:
+                await mp.download_audio(playlist[1])
         else:
             await msg.delete()
+
         if not playlist:
             pl = f"{emoji.NO_ENTRY} Empty playlist\nPlaylist是空的"
         else:
@@ -152,8 +150,7 @@ async def yplay(_, message: Message):
                 f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}"
                 for i, x in enumerate(playlist)
                 ])
-        for track in playlist[:2]:
-            await mp.download_audio(track)
+
         if message.chat.type == "private":
             await message.reply_text(pl)
         if LOG_GROUP:
