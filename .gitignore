@@ -8,3 +8,5 @@ unknown_errors.txt
 downloads/
 __pycache__/
 .vscode
+coverage.xml
+.coverage

@@ -1,5 +1,6 @@
 pytest
 pytest-asyncio
+pytest-datadir
 TgCrypto
 aiohttp
 ffmpeg-python

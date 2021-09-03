@@ -7,3 +7,6 @@ unknown_errors.txt
 *.env
 downloads
 __pycache__/
+.vscode
+coverage.xml
+.coverage

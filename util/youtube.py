@@ -10,10 +10,10 @@ def get_ydl():
     ydl = YoutubeDL(ydl_opts)
     return ydl
 
-def get_finalurl(url):
-    ydl = get_ydl()
-    info = ydl.extract_info(url, download=False)
-    return info["url"]
+# def get_finalurl(url):
+#     ydl = get_ydl()
+#     info = ydl.extract_info(url, download=False)
+#     return info["url"]
 
 def get_first_finalurl(url):
     ydl = get_ydl()
@@ -42,13 +42,4 @@ async def youtube_downaudio(url: str) -> str:
         print(e)
         return None
     return path.join("downloads", f"{info['id']}.{info['ext']}")
-
-if __name__ == "__main__":
-    # url = "https://www.youtube.com/watch?v=_daTfgc4u3k"
-    # furl = get_first_finalurl(url)
-    # print(furl)
-
-    url = "https://www.youtube.com/watch?v=kYEC7bm7gFs"
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(youtube_downaudio(url))
 
