@@ -10,3 +10,4 @@ youtube_search
 wget
 environs
 av
+numpy
